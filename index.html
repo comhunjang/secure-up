@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="정보보안 실천 연습: 정보 분류, 위협 요소 판별, 보안 기술 실습, 디지털 윤리 실천을 직접 해 보며 점검하는 학생용 연습장">
+<meta name="theme-color" content="#f6f1e7">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231d2433'/%3E%3Cpath d='M16 6l8 3v7c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V9z' fill='%23f6f1e7'/%3E%3C/svg%3E">
+<title>정보보안 실천 연습장</title>
+<style>
+:root{--paper:#f6f1e7;--card:#fffdf8;--ink:#1d2433;--mute:#5d6577;--line:#d9d0bd;--red:#c4262e;--redbg:#fbe4e2;--green:#1f7a4d;--greenbg:#dff2e6;--blue:#1d4f91;--bluebg:#e0ebf8;--amber:#a56200;--amberbg:#fcefd0;--mk1:#ffe08a;--mk2:#b9e6c9;--mk3:#bcd7f5;--r:10px}
+@media(prefers-color-scheme:dark){:root{--paper:#171b26;--card:#1f2432;--ink:#ece8dc;--mute:#a4a9b8;--line:#3a4157;--red:#ff7b80;--redbg:#3d2024;--green:#6fd6a0;--greenbg:#1b3328;--blue:#8fb8ee;--bluebg:#1d2a40;--amber:#f0b95a;--amberbg:#3a2e16;--mk1:#6b5a1a;--mk2:#25553a;--mk3:#274a78}}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.65 "Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif}
+h1,h2,h3{font-family:"Noto Serif KR","Nanum Myeongjo","Batang",serif;line-height:1.3;margin:0 0 .5em}
+.wrap{max-width:820px;margin:0 auto;padding:20px 16px 60px}
+header.top{border-bottom:3px double var(--ink);padding:16px 0 10px;margin-bottom:14px}
+header.top .k{font-size:12px;letter-spacing:.14em;color:var(--red);font-weight:700}
+header.top h1{font-size:28px;margin:2px 0 0}
+nav{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 18px}
+nav a{padding:6px 12px;border:1px solid var(--line);border-radius:999px;color:var(--ink);text-decoration:none;font-size:14px;background:var(--card)}
+nav a.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin:0 0 14px}
+.passage{border-left:4px solid var(--ink);padding:6px 0 6px 14px;margin:8px 0;font-size:15.5px}
+.note{font-size:14px;color:var(--mute)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+button,.btn{font:inherit;font-size:15px;padding:8px 14px;border-radius:8px;border:1.5px solid var(--ink);background:var(--card);color:var(--ink);cursor:pointer}
+button:hover{background:var(--ink);color:var(--paper)}
+button.pri{background:var(--ink);color:var(--paper)}
+button.sel{background:var(--blue);border-color:var(--blue);color:#fff}
+button.ok{background:var(--green);border-color:var(--green);color:#fff}
+button.no{background:var(--red);border-color:var(--red);color:#fff}
+button:disabled{opacity:.5;cursor:default}
+button:focus-visible,a:focus-visible,textarea:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+textarea,input[type=text],select{width:100%;font:inherit;font-size:15px;padding:8px 10px;border:1.5px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}
+textarea{min-height:64px;resize:vertical}
+label{display:block;font-size:14px;font-weight:700;margin:10px 0 4px}
+.tag{display:inline-block;padding:1px 9px;border-radius:999px;font-size:12.5px;font-weight:700}
+.tag.P{background:var(--redbg);color:var(--red)}.tag.S{background:var(--greenbg);color:var(--green)}
+.fb{margin-top:8px;padding:8px 12px;border-radius:8px;font-size:14.5px}
+.fb.good{background:var(--greenbg);color:var(--green)}.fb.bad{background:var(--redbg);color:var(--red)}.fb.info{background:var(--bluebg);color:var(--blue)}.fb.warn{background:var(--amberbg);color:var(--amber)}
+mark{padding:1px 2px;border-radius:3px;color:inherit}.m0{background:var(--mk1)}.m1{background:var(--mk2)}.m2{background:var(--mk3)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:560px){.grid2{grid-template-columns:1fr}header.top h1{font-size:23px}}
+.cat{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px dashed var(--line)}
+.cat:last-child{border:0}
+.bar{height:12px;border-radius:6px;background:var(--line);overflow:hidden}.bar>i{display:block;height:100%;transition:width .2s}
+table.ac{border-collapse:collapse;width:100%;font-size:14px}table.ac th,table.ac td{border:1px solid var(--line);padding:6px;text-align:center}
+table.ac td button{width:100%;padding:6px 4px;font-size:13.5px}
+.chk li{list-style:none;margin:2px 0}.chk{padding:0;margin:8px 0}
+.chk .y::before{content:"✔ ";color:var(--green);font-weight:700}.chk .n::before{content:"✘ ";color:var(--red);font-weight:700}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.steps a{display:block;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px}
+.steps a:hover{border-color:var(--ink)}.steps b{font-family:"Noto Serif KR",serif;font-size:17px}
+.big{font-size:22px;font-family:"Noto Serif KR",serif;font-weight:700}
+.files .f{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px dashed var(--line)}
+.sw{display:inline-flex;gap:6px;align-items:center;margin-right:14px;font-size:15px}.sw input{width:20px;height:20px}
+.small{font-size:13px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top"><div class="k">정보 · 정보보안 실천 · 연습</div><h1>정보보안 실천 연습장</h1></header>
+<nav id="nav" aria-label="연습 단계"></nav>
+<main id="app"></main>
+<p class="note small" style="margin-top:30px">※ 이 연습장의 사례와 자동 점검은 연습용 안내입니다. 실제 수행평가의 문항·채점은 교사가 합니다.</p>
+</div>
+<script>
+const D={"cats": [{"n": "인적 정보", "t": "P", "why": "이름·주민등록번호처럼 개인을 알아볼 수 있는 정보라서, 유출되면 신원 도용과 사기에 쓰일 수 있어요.", "ex": ["친구의 주민등록번호", "내 이름과 집 주소"]}, {"n": "금융 정보", "t": "P", "why": "계좌·카드 정보는 유출되면 바로 금전 피해로 이어져요.", "ex": ["내 체크카드 번호와 비밀번호", "부모님의 계좌번호"]}, {"n": "군사 정보", "t": "P", "why": "국가 안전과 관련된 정보라서 공개하면 안 돼요.", "ex": ["군부대의 위치와 병력 정보", "군사 작전 계획 문서"]}, {"n": "위치 정보", "t": "P", "why": "지금 있는 곳과 다니는 길이 알려지면 사생활 침해와 범죄에 이용될 수 있어요.", "ex": ["내가 지금 있는 장소의 실시간 정보", "내가 매일 다니는 이동 경로"]}, {"n": "의료 정보", "t": "P", "why": "진료 기록과 검사 결과는 아주 민감한 개인 정보예요.", "ex": ["내 진료 기록", "친구가 받은 건강검진 결과"]}, {"n": "구인 정보", "t": "S", "why": "일자리를 찾는 사람과 구하는 곳 모두에게 이익이 되도록 널리 알리는 정보예요.", "ex": ["지역 편의점의 아르바이트 모집 공고", "청소년 인턴 채용 안내"]}, {"n": "교통 정보", "t": "S", "why": "많은 사람이 함께 쓰면 이동이 편해지는 공공 정보예요.", "ex": ["학교 앞 버스 노선 시간표", "오늘의 도로 공사·정체 안내"]}, {"n": "지역 정보", "t": "S", "why": "지역 주민이 함께 이용하도록 공개하는 정보예요. 개인의 위치 정보와 달라요.", "ex": ["우리 동네 도서관 행사 안내", "지역 축제 일정"]}, {"n": "경제 정보", "t": "S", "why": "공개된 물가·환율 같은 일반 경제 정보는 모두에게 도움이 돼요. 개인의 금융 정보와 달라요.", "ex": ["이번 주 환율 변동", "지역 물가 동향 통계"]}, {"n": "재난 정보", "t": "S", "why": "빨리 널리 알릴수록 사람들의 안전을 지킬 수 있어요.", "ex": ["태풍 경보와 대피 장소 안내", "지진 발생 시 행동 요령"]}, {"n": "컴퓨터 바이러스 정보", "t": "S", "why": "새 바이러스의 특징과 대처법을 공유하면 피해를 예방할 수 있어요.", "ex": ["새로 퍼진 악성 파일의 특징과 대처법", "백신 긴급 업데이트 안내"]}, {"n": "건강 상식", "t": "S", "why": "일반적인 건강 관리 방법은 모두에게 도움이 돼요. 개인의 진료 기록(의료 정보)과 달라요.", "ex": ["올바른 손 씻기 방법", "수면 시간을 지키는 요령"]}, {"n": "맛집 정보", "t": "S", "why": "이용자들이 서로 도움이 되도록 나누는 생활 정보예요.", "ex": ["학교 근처 분식집 후기", "지역 빵집 영업시간 소개"]}, {"n": "여행 정보", "t": "S", "why": "여행자들이 함께 쓰는 공개 생활 정보예요.", "ex": ["제주도 여행 코스 소개", "여행지 교통 이용 팁"]}, {"n": "해킹 정보", "t": "S", "why": "해킹 수법과 예방·신고 방법을 공유하면 피해를 막을 수 있어요. 남의 계정을 실제로 뚫는 일을 돕는 것과는 달라요.", "ex": ["유명 해킹 수법의 원리와 예방법", "해킹 피해 사례와 신고 방법"]}, {"n": "환경 정보", "t": "S", "why": "공공의 건강과 생활에 도움이 되는 공개 정보예요.", "ex": ["미세먼지 농도 예보", "분리배출 방법 안내"]}], "threats": {"디도스": {"df": "수많은 컴퓨터가 한꺼번에 접속 요청을 보내 서버를 과부하로 마비시키는 공격", "clue": "한꺼번에 몰리는 접속 요청, 서비스 이용 불가, 정보는 그대로", "vs": "해킹과 달리 침입해서 정보를 보거나 바꾸지 않아요."}, "악성코드": {"df": "사용자 몰래 설치·실행되어 기기와 정보에 피해를 주는 프로그램(바이러스, 랜섬웨어, 스파이웨어 등)", "clue": "파일·앱·첨부파일을 열거나 설치한 뒤에 생기는 이상 증상", "vs": "랜섬웨어도 악성코드예요. 메일이 계기여도 피해를 주는 것은 악성 프로그램이에요."}, "해킹": {"df": "허락 없이 남의 컴퓨터·계정·네트워크에 침입해 정보를 보거나 바꾸는 행위", "clue": "허술한 암호·취약점을 이용한 무단 접속, 열람·변조·삭제", "vs": "악성 프로그램 설치 없이 사람이 직접 침입하는 모습이에요."}, "파밍": {"df": "정상 주소를 입력해도 가짜 사이트로 연결되게 만들어 금융정보 등을 빼내는 공격", "clue": "주소는 맞는데 가짜 화면, 카드번호·비밀번호 입력 유도", "vs": "피싱은 가짜 문자·메일의 링크로 유인하는 것이고, 파밍은 주소 자체가 조작돼요."}}, "cases": [{"id": "S1", "kind": "sheet", "label": "연습지 [가]", "threat": "악성코드", "text": "직장인 A 씨는 월요일 아침, 회사 메일함에서 ‘급여 명세서 확인’이라는 제목의 이메일을 받았다. 제목과 내용은 실제 사내 공지처럼 자연스러웠고, 발신자 주소도 인사팀과 거의 비슷했다. 메일에는 ‘이번 달 급여 내용이 첨부된 파일을 확인해 주세요’라는 문구와 함께 문서 파일이 있었다. A씨는 별다른 의심 없이 파일을 열었지만, 컴퓨터 화면이 멈추더니 아무 작업도 할 수 없게 되었다. 곧 화면에는 “이 컴퓨터의 주요 파일이 암호화되었습니다. 일정 시간 내에 지정된 방식으로 돈을 지불하지 않으면 파일은 복구할 수 없습니다”라는 경고 메시지가 나타났다. 남은 시간은 72시간이었고, 가상화폐 지불 절차가 안내되어 있었다. 그제야 A씨는 중요한 자료와 파일이 모두 암호화된 랜섬웨어 공격을 당했음을 깨달았다.", "feats": [{"t": "실제 공지처럼 꾸민 이메일의 첨부 파일을 열게 만들어 감염시킨다.", "ev": ["‘급여 명세서 확인’이라는 제목의 이메일", "별다른 의심 없이 파일을 열었지만"], "kw": ["메일", "첨부", "열", "위장", "속"]}, {"t": "컴퓨터 화면이 멈추고 주요 파일이 암호화되어 사용할 수 없게 된다.", "ev": ["컴퓨터 화면이 멈추더니 아무 작업도 할 수 없게 되었다", "주요 파일이 암호화되었습니다"], "kw": ["암호화", "멈", "사용할 수 없", "작업", "잠"]}, {"t": "파일 복구를 대가로 가상화폐 등 금전을 요구한다(랜섬웨어).", "ev": ["돈을 지불하지 않으면 파일은 복구할 수 없습니다", "가상화폐 지불 절차가 안내되어 있었다"], "kw": ["돈", "금전", "가상화폐", "요구", "복구", "랜섬웨어"]}]}, {"id": "S2", "kind": "sheet", "label": "연습지 [나]", "threat": "해킹", "text": "B 중학교에서 학생과 교사가 공용으로 사용하는 교내 Wi-Fi 네트워크를 통해 온라인 수업과 자료 공유를 진행하고 있었다. 그러나 최근, 외부인이 네트워크 취약점을 분석해 보안 설정이 미흡한 무선망에 접속하는 데 성공했다. 외부인은 네트워크에 연결된 교사 노트북과 파일 서버를 탐색한 뒤, 공유 폴더에 접근해 수업 자료와 학생 과제 파일을 무단으로 다운로드했다. 이후 권한이 없는 상태에서 시험 문제 파일을 열람하고, 일부 파일을 수정하거나 삭제하는 등 시스템에 변조를 가했다. 특히, 수업 시간에 사용되던 프레젠테이션 자료가 변형되어 부적절한 이미지가 삽입되는 일이 발생해 수업이 중단되기도 했다. 이 사건은 무선 네트워크 보안 취약점과 접속 권한 관리 부실을 동시에 노린 침입이었다. 네트워크 범위 안이라면 누구든 시도할 수 있는 점을 악용했고, 침입 후 내부 자원에 대한 무단 열람·변조·삭제가 연속적으로 이루어졌다.", "feats": [{"t": "보안 설정이 미흡한 무선망의 취약점을 분석해 허락 없이 접속한다.", "ev": ["네트워크 취약점을 분석해 보안 설정이 미흡한 무선망에 접속하는 데 성공했다"], "kw": ["취약", "무선", "보안 설정", "미흡", "침입", "접속"]}, {"t": "권한 없이 공유 폴더에 접근해 자료를 내려받고 시험 문제 파일을 열람한다(무단 열람·유출).", "ev": ["수업 자료와 학생 과제 파일을 무단으로 다운로드했다", "권한이 없는 상태에서 시험 문제 파일을 열람하고"], "kw": ["열람", "다운로드", "유출", "무단", "권한"]}, {"t": "파일을 수정·삭제하고 자료를 바꿔 놓는 변조·훼손으로 수업이 중단된다.", "ev": ["일부 파일을 수정하거나 삭제하는 등 시스템에 변조를 가했다", "수업이 중단되기도 했다"], "kw": ["수정", "삭제", "변조", "변형", "훼손", "중단"]}]}, {"id": "M1", "kind": "practice", "label": "연습 사례 1", "threat": "악성코드", "text": "고등학생 C는 동영상이 재생되지 않자 블로그 광고 배너에 나온 ‘무료 재생 도우미’ 프로그램을 내려받아 설치했다. 설치가 끝나자 인터넷 창의 첫 화면이 낯선 사이트로 바뀌고, 닫아도 광고 창이 계속 나타났다. 얼마 뒤 컴퓨터가 자주 멈추었고 저장해 둔 사진 파일 일부가 열리지 않았다. 점검해 보니 이 프로그램에 숨어 있던 코드가 C 몰래 컴퓨터에 남아 정보를 외부로 보내고 있었다.", "feats": [{"t": "정상 프로그램처럼 보이는 파일을 내려받아 사용자가 직접 설치하게 만든다.", "ev": ["‘무료 재생 도우미’ 프로그램을 내려받아 설치했다"], "kw": ["설치", "내려받", "위장", "무료", "직접"]}, {"t": "설치 뒤 첫 화면이 바뀌고 광고 창이 계속 뜨며 컴퓨터가 멈추는 등 기기에 이상이 생긴다.", "ev": ["닫아도 광고 창이 계속 나타났다", "컴퓨터가 자주 멈추었고"], "kw": ["광고", "느려", "멈", "이상", "열리지", "피해"]}, {"t": "사용자 몰래 정보를 외부로 보낸다.", "ev": ["정보를 외부로 보내고 있었다"], "kw": ["몰래", "외부", "유출", "전송", "빼"]}]}, {"id": "D1", "kind": "practice", "label": "연습 사례 2", "threat": "디도스", "text": "인기 가수의 콘서트 예매가 시작되는 시각, 예매 화면이 계속 멈춘 채 넘어가지 않았다. 조사해 보니 초당 수십만 건의 접속 요청이 전국에 흩어진 수많은 컴퓨터에서 한꺼번에 몰려 있었다. 서버가 이를 감당하지 못해 팬들은 한 시간 넘게 예매를 할 수 없었다. 저장된 예매·회원 정보는 그대로였고, 같은 신호를 받은 기기들이 보낸 요청이었다.", "feats": [{"t": "수많은 컴퓨터가 한꺼번에 엄청난 양의 접속 요청을 보낸다.", "ev": ["초당 수십만 건의 접속 요청이 전국에 흩어진 수많은 컴퓨터에서 한꺼번에 몰려 있었다"], "kw": ["동시", "한꺼번", "수많은", "접속 요청", "수십만"]}, {"t": "서버가 처리하지 못해 서비스를 이용할 수 없게 된다.", "ev": ["팬들은 한 시간 넘게 예매를 할 수 없었다", "서버가 이를 감당하지 못해"], "kw": ["서버", "마비", "이용할 수 없", "과부하", "열리지", "예매"]}, {"t": "정보를 훔치거나 바꾸지 않고 서비스 이용을 방해하는 것이 목적이다.", "ev": ["저장된 예매·회원 정보는 그대로였고"], "kw": ["정보", "그대로", "방해", "목적", "유출되지"]}]}, {"id": "F1", "kind": "practice", "label": "연습 사례 3", "threat": "파밍", "text": "고등학생 D는 학교 온라인 학습 사이트의 주소를 주소창에 정확히 쳐서 들어갔다. 첫 화면은 평소와 똑같았지만, 곧 ‘보안 점검 중입니다. 아이디, 암호, 휴대전화 인증번호를 다시 입력해 주세요’라는 창이 떴다. D가 입력하자 계정에 낯선 기기가 접속했다는 알림이 왔다. 알고 보니 올바른 주소를 쳤는데도 가짜 사이트로 이어지도록 컴퓨터의 주소 정보가 바뀌어 있었다.", "feats": [{"t": "정확한 주소를 입력해도 가짜 사이트로 이어지도록 주소 정보를 바꾼다.", "ev": ["올바른 주소를 쳤는데도 가짜 사이트로 이어지도록 컴퓨터의 주소 정보가 바뀌어 있었다"], "kw": ["가짜", "주소", "조작", "바뀌", "이어"]}, {"t": "진짜와 똑같은 화면으로 속여 아이디·암호·인증번호를 입력하게 한다.", "ev": ["첫 화면은 평소와 똑같았지만", "아이디, 암호, 휴대전화 인증번호를 다시 입력해 주세요"], "kw": ["똑같", "속", "아이디", "암호", "인증번호", "입력"]}, {"t": "입력한 정보로 계정이 도용되는 피해가 생긴다.", "ev": ["계정에 낯선 기기가 접속했다는 알림이 왔다"], "kw": ["도용", "피해", "계정", "낯선"]}]}, {"id": "H1", "kind": "practice", "label": "연습 사례 4", "threat": "해킹", "text": "어느 학원의 수강생 관리 시스템에는 이미 그만둔 강사의 계정이 지워지지 않은 채 남아 있었다. 외부인이 이 계정의 암호를 짐작해 맞힌 뒤 학원의 허락 없이 시스템에 들어갔다. 그는 수강생 명단과 연락처를 열람하고, 일부 성적 기록을 수정했다. 학원은 학부모가 문의한 뒤에야 침입을 알아챘다.", "feats": [{"t": "지워지지 않은 계정처럼 관리가 허술한 부분을 이용해 허락 없이 로그인한다.", "ev": ["이미 그만둔 강사의 계정이 지워지지 않은 채", "학원의 허락 없이 시스템에 들어갔다"], "kw": ["허락", "계정", "관리", "허술", "로그인"]}, {"t": "명단과 연락처를 열람해 정보를 유출하고 성적 기록을 수정해 변조한다.", "ev": ["수강생 명단과 연락처를 열람하고", "일부 성적 기록을 수정했다"], "kw": ["열람", "유출", "수정", "변조", "삭제"]}, {"t": "피해가 생긴 뒤에야 침입을 알아채는 경우가 많다.", "ev": ["학부모가 문의한 뒤에야 침입을 알아챘다"], "kw": ["뒤에야", "나서야", "모르", "알아채", "발견"]}]}, {"id": "M2", "kind": "practice", "label": "연습 사례 5", "threat": "악성코드", "text": "고등학생 E는 메신저로 친구가 보낸 ‘수학여행 사진.jpg’ 파일을 눌렀지만 사진은 열리지 않았다. 파일 이름 끝에는 눈에 잘 띄지 않게 실행 파일 표시가 붙어 있었다. 그날 저녁 E의 메신저 친구들에게 같은 파일이 자동으로 전송되었고, 친구 여러 명의 컴퓨터도 느려졌다. 확인해 보니 사진으로 위장한 프로그램이 실행되어 E의 컴퓨터를 감염시키고 다른 컴퓨터로 퍼져 나간 것이었다.", "feats": [{"t": "사진 파일처럼 위장해 사용자가 직접 열게 만든다.", "ev": ["사진으로 위장한 프로그램이 실행되어"], "kw": ["위장", "사진", "열", "속"]}, {"t": "다른 사람에게 자동으로 전송되며 퍼져 나간다.", "ev": ["같은 파일이 자동으로 전송되었고"], "kw": ["퍼", "전송", "친구", "자동", "확산"]}, {"t": "컴퓨터가 느려지는 등 기기 피해가 생긴다.", "ev": ["친구 여러 명의 컴퓨터도 느려졌다"], "kw": ["느려", "피해", "감염", "이상"]}]}, {"id": "D2", "kind": "practice", "label": "연습 사례 6", "threat": "디도스", "text": "마감을 하루 앞둔 시청 의견 접수 사이트가 점점 느려지다 끝내 접속되지 않았다. 서버 기록에는 단 몇 분 사이에 수많은 컴퓨터가 동시에 보낸 접속 요청이 쌓여 있었다. 서버가 한계를 넘어 멈추자 시민들은 의견을 보거나 제출할 수 없었다. 이미 접수된 의견은 그대로 남아 있었다. 사이트 운영을 방해하는 것이 이 요청의 목적이었다.", "feats": [{"t": "수많은 컴퓨터가 동시에 접속 요청을 보내 서버에 몰린다.", "ev": ["수많은 컴퓨터가 동시에 보낸 접속 요청이 쌓여 있었다"], "kw": ["동시", "한꺼번", "수많은", "접속 요청"]}, {"t": "서버가 한계를 넘어 멈추어 시민들이 사이트를 이용할 수 없게 된다.", "ev": ["시민들은 의견을 보거나 제출할 수 없었다", "서버가 한계를 넘어 멈추자"], "kw": ["서버", "마비", "이용할 수 없", "과부하", "열리지", "멈"]}, {"t": "접수된 의견은 그대로이므로 서비스 방해가 목적이다.", "ev": ["이미 접수된 의견은 그대로 남아 있었다", "사이트 운영을 방해하는 것이 이 요청의 목적"], "kw": ["훼손", "유출", "그대로", "방해", "목적"]}]}, {"id": "F2", "kind": "practice", "label": "연습 사례 7", "threat": "파밍", "text": "시민 F는 즐겨 쓰는 증권 회사의 주소를 주소창에 쳐서 들어갔다. 로그인 화면은 진짜와 구별할 수 없을 만큼 똑같았고, 이어서 ‘계좌 보호를 위해 계좌 비밀번호와 보안카드 번호를 입력하세요’라는 안내가 나왔다. F가 입력하고 얼마 뒤 계좌의 돈이 모르는 곳으로 옮겨졌다. 조사 결과 정확한 주소를 쳐도 가짜 사이트로 가도록 컴퓨터의 주소 정보가 바뀌어 있었다.", "feats": [{"t": "정확한 주소를 입력해도 가짜 사이트로 가도록 주소 정보를 바꾼다.", "ev": ["정확한 주소를 쳐도 가짜 사이트로 가도록 컴퓨터의 주소 정보가 바뀌어 있었다"], "kw": ["가짜", "주소", "조작", "바뀌"]}, {"t": "진짜와 구별할 수 없는 화면으로 속여 계좌 비밀번호와 보안카드 번호를 입력하게 한다.", "ev": ["진짜와 구별할 수 없을 만큼 똑같았고", "계좌 비밀번호와 보안카드 번호를 입력하세요"], "kw": ["똑같", "속", "보안카드", "비밀번호", "입력"]}, {"t": "입력한 금융정보로 계좌의 돈이 빠져나가는 금전 피해가 생긴다.", "ev": ["계좌의 돈이 모르는 곳으로 옮겨졌다"], "kw": ["돈", "금전", "피해", "계좌", "빠져", "옮겨"]}]}, {"id": "H2", "kind": "practice", "label": "연습 사례 8", "threat": "해킹", "text": "고등학생 G의 SNS 계정에 어느 날 낯선 지역에서 로그인한 기록이 남았다. 조사해 보니 외부 사람이 하루 동안 암호를 바꿔 가며 수천 번 입력해 G의 암호를 알아냈다. G의 암호는 생일 숫자 여섯 자리였다. 그는 허락 없이 계정에 들어가 비공개로 저장해 둔 사진과 메시지를 열람했다.", "feats": [{"t": "암호를 바꿔 가며 반복해 입력하는 방법으로 약한 암호를 알아낸다.", "ev": ["암호를 바꿔 가며 수천 번 입력해", "생일 숫자 여섯 자리였다"], "kw": ["반복", "수천", "약한", "생일", "암호", "추측"]}, {"t": "허락 없이 계정에 들어가 비공개 사진과 메시지를 열람한다.", "ev": ["허락 없이 계정에 들어가", "사진과 메시지를 열람했다"], "kw": ["허락", "열람", "들어", "사진", "메시지", "침입"]}, {"t": "낯선 지역에서 로그인한 기록 같은 흔적이 남는다.", "ev": ["낯선 지역에서 로그인한 기록이 남았다"], "kw": ["기록", "흔적", "낯선", "로그"]}]}, {"id": "M3", "kind": "practice", "label": "연습 사례 9", "threat": "악성코드", "text": "고등학생 H는 인터넷 카페에서 받은 ‘무료 글꼴 모음’ 압축 파일을 풀어 안에 든 프로그램을 실행했다. 겉으로는 아무 일도 일어나지 않았지만, 며칠 뒤 H는 자기 학습 사이트 이용 기록에 낯선 접속 흔적이 남은 것을 보았다. 확인해 보니 그 프로그램이 컴퓨터 안에 숨어 있다가 H가 키보드로 입력한 글자를 기록해 외부로 보내고 있었다. H는 프로그램을 지우고 암호를 바꾼 뒤에야 마음을 놓을 수 있었다.", "feats": [{"t": "자료로 위장한 압축 파일 속 프로그램을 사용자가 직접 실행하게 만든다.", "ev": ["압축 파일을 풀어 안에 든 프로그램을 실행했다"], "kw": ["실행", "위장", "압축", "프로그램", "직접"]}, {"t": "겉으로 티 나지 않게 컴퓨터 안에 숨어 활동한다.", "ev": ["겉으로는 아무 일도 일어나지 않았지만", "컴퓨터 안에 숨어 있다가"], "kw": ["숨", "몰래", "티", "모르"]}, {"t": "입력한 글자를 기록해 외부로 보내 계정 정보가 유출될 위험이 생긴다.", "ev": ["입력한 글자를 기록해 외부로 보내고 있었다"], "kw": ["입력", "기록", "외부", "유출", "계정"]}]}, {"id": "D3", "kind": "practice", "label": "연습 사례 10", "threat": "디도스", "text": "학생 온라인 코딩 대회가 시작되자 대회 사이트에 접속한 참가자들은 문제 화면을 볼 수 없었다. 서버 관리자는 평소의 수천 배에 이르는 접속 요청이 여러 나라의 컴퓨터에서 동시에 몰린 것을 확인했다. 서버가 과부하로 멈춰 대회는 한 시간 미뤄졌다. 참가자의 개인정보와 제출 자료는 그대로였고, 대회를 방해할 목적으로 보낸 요청이었다.", "feats": [{"t": "평소보다 수천 배 많은 접속 요청이 여러 컴퓨터에서 동시에 들어온다.", "ev": ["평소의 수천 배에 이르는 접속 요청이 여러 나라의 컴퓨터에서 동시에 몰린"], "kw": ["동시", "수천", "접속 요청", "여러", "수많은"]}, {"t": "서버가 과부하로 멈춰 사이트를 이용할 수 없게 된다.", "ev": ["서버가 과부하로 멈춰 대회는 한 시간 미뤄졌다", "참가자들은 문제 화면을 볼 수 없었다"], "kw": ["과부하", "서버", "멈", "마비", "볼 수 없", "미뤄"]}, {"t": "개인정보와 제출 자료는 그대로이므로 서비스 방해가 목적이다.", "ev": ["개인정보와 제출 자료는 그대로였고", "대회를 방해할 목적"], "kw": ["방해", "목적", "유출", "훼손", "그대로"]}]}, {"id": "F3", "kind": "practice", "label": "연습 사례 11", "threat": "파밍", "text": "직장인 I는 구청 민원 발급 사이트에 들어가려고 주소를 직접 쳤다. 화면 모양은 평소와 같았지만 ‘본인 확인을 위해 주민등록번호 전체와 공동인증서 암호를 입력하세요’라는 창이 떠서 I는 시키는 대로 했다. 며칠 뒤 I의 이름으로 모르는 대출 신청 문자가 왔다. 점검해 보니 I의 컴퓨터는 올바른 주소로 들어가도 다른 가짜 화면으로 안내하도록 주소 정보가 바뀐 상태였다.", "feats": [{"t": "올바른 주소로 들어가도 가짜 사이트로 안내하도록 주소 정보를 바꾼다.", "ev": ["올바른 주소로 들어가도 다른 가짜 화면으로 안내하도록 주소 정보가 바뀐 상태"], "kw": ["가짜", "주소", "조작", "바뀌", "안내"]}, {"t": "평소와 같은 화면으로 속여 주민등록번호와 인증서 암호를 입력하게 한다.", "ev": ["화면 모양은 평소와 같았지만", "주민등록번호 전체와 공동인증서 암호를 입력하세요"], "kw": ["속", "주민등록번호", "인증서", "암호", "입력", "같은"]}, {"t": "빼낸 정보로 명의를 도용해 대출을 신청하는 등 피해로 이어진다.", "ev": ["I의 이름으로 모르는 대출 신청 문자가 왔다"], "kw": ["도용", "대출", "명의", "피해"]}]}, {"id": "H3", "kind": "practice", "label": "연습 사례 12", "threat": "해킹", "text": "한 카페의 공용 무선 인터넷은 암호 없이 누구나 접속할 수 있었다. 같은 카페에 있던 한 이용자가 이 허술한 무선망을 이용해 다른 손님들이 주고받는 정보를 엿보았다. 그는 한 손님이 입력한 로그인 정보를 알아내 허락 없이 그 손님의 계정에 접속했다. 손님은 계정에서 처음 보는 접속 기록을 발견하고서야 피해를 알게 되었다.", "feats": [{"t": "암호 없는 공용 무선망 같은 보안 허점을 이용한다.", "ev": ["암호 없이 누구나 접속할 수 있었다", "이 허술한 무선망을 이용해"], "kw": ["허술", "암호", "무선", "공용", "허점", "취약"]}, {"t": "다른 사람이 주고받는 정보를 엿보고 로그인 정보를 알아낸다.", "ev": ["주고받는 정보를 엿보았다", "입력한 로그인 정보를 알아내"], "kw": ["엿", "로그인", "알아", "가로채", "정보"]}, {"t": "허락 없이 남의 계정에 접속해 피해를 준다.", "ev": ["허락 없이 그 손님의 계정에 접속했다"], "kw": ["허락", "계정", "접속", "도용", "피해"]}]}], "order": ["S1", "S2", "M1", "D1", "F1", "H1", "M2", "D2", "F2", "H2", "M3", "D3", "F3", "H3"], "kw": {"concept": [{"label": "정보를 ‘지킨다’는 뜻", "re": "보호|지키|지켜|막"}, {"label": "위협의 종류(무단 접근·유출·변조·파괴 등)", "re": "무단|허락|접근|유출|변조|파괴|훼손|도난|침해|위협"}, {"label": "안전하게 관리·이용", "re": "안전|관리"}], "need": [{"label": "개인·금전 피해 예방", "re": "개인정보|금융|재산|돈|피해|사생활|도용"}, {"label": "정보의 신뢰·정확성", "re": "신뢰|믿|정확|변조"}, {"label": "서비스·사회의 안전", "re": "서비스|이용|사회|안전|마비"}], "why": "보호|피해|존중|책임|다른 사람|타인|개인정보|유출|예방|막|배려|안전|침해"}, "techs": ["개인 암호 설정·변경", "기기·클라우드 접근 제어", "바이러스 백신 설정"], "tech": {"개인 암호 설정·변경": {"kw": ["암호|비밀번호", "본인|확인|인증", "복잡|길|변경|바꾸"], "kwl": ["암호(비밀번호)", "본인 확인", "길고 복잡하게·바꾸기"], "hw": "암호|비밀번호|인증|로그아웃|변경|바꾸", "ex": ["공용 컴퓨터에서 로그인한 뒤에는 로그아웃하고 암호를 저장하지 않는다 → 다음에 쓰는 사람이 내 계정과 대화를 볼 수 없게 막는 행동이다.", "친구의 계정에 허락 없이 들어가 암호를 맞혀 보지 않는다 → 남의 계정에 허락 없이 접근하는 것은 개인정보 침해이기 때문이다."], "hint": "암호는 나만 아는 비밀 글자 조합으로, 계정에 들어오는 사람이 정말 나인지 확인하는 수단이다."}, "기기·클라우드 접근 제어": {"kw": ["접근|권한|허가", "제한|막|허용", "인증|잠금|로그인"], "kwl": ["접근·권한", "제한·허용", "인증·잠금·로그인"], "hw": "권한|접근|잠금|공유|인증|허용|제한|열람", "ex": ["모둠 과제 문서는 ‘링크가 있는 모든 사람’이 아니라 모둠원만 편집하도록 공유한다 → 모둠원의 자료가 퍼지거나 지워지지 않게 책임지는 행동이다.", "친구의 스마트폰이나 노트북을 허락 없이 열어 보지 않는다 → 다른 사람의 정보와 사생활을 존중하는 것이다."], "hint": "정해진 사람만 기기나 클라우드 자료를 열람·수정할 수 있도록 로그인·잠금·권한을 설정하는 기술이다."}, "바이러스 백신 설정": {"kw": ["악성|바이러스", "탐지|검사|찾|차단|치료", "업데이트|실시간"], "kwl": ["악성코드·바이러스", "탐지·검사·차단·치료", "실시간 감시·업데이트"], "hw": "백신|검사|업데이트|실시간|악성|바이러스|열기 전|설치", "ex": ["친구가 보낸 파일도 열기 전에 검사하고, 이상하면 보낸 친구에게 알려 준다 → 감염이 다른 사람에게 퍼지는 것을 막는 행동이다.", "학교 컴퓨터에 USB를 꽂기 전에 검사한다 → 모두가 쓰는 공용 컴퓨터를 책임 있게 사용하는 것이다."], "hint": "악성 프로그램이 컴퓨터에서 실행되지 않도록 찾아내 차단·치료하는 프로그램이다. 실시간 감시와 업데이트가 중요하다."}}, "q2ex": {"concept": "정보보안은 정보를 무단 접근·유출·변조·파괴 등의 위협으로부터 보호하여 안전하게 관리하는 활동이다.", "need": "내 계정과 개인정보가 새어 나가면 돈을 잃거나 신분을 도용당할 수 있어서 필요하다."}, "ac": {"roles": ["교사", "학생(나)", "다른 학생", "외부인"], "files": ["시험 문제 파일", "내 과제 폴더", "수업 자료"], "mn": [[2, 0, 0, 0], [1, 2, 0, 0], [2, 1, 1, 0]], "mx": [[2, 0, 0, 0], [1, 2, 0, 0], [2, 1, 1, 0]], "note": ["(모든 자료는 학교 안에서만 쓰는 자료라고 가정해요.) 시험 문제는 만드는 교사만 다룹니다.", "내 과제는 나만 고치고 교사는 읽기만 합니다.", "수업 자료는 교사가 고치고 학생은 읽기만 합니다."]}, "av": [{"n": "급여명세서_확인.docx.exe", "src": "메일 첨부 · 발신 주소가 회사와 비슷함", "bad": true, "variant": false}, {"n": "수업자료_최종.pptx", "src": "담임 선생님이 학급 클라우드에 올림", "bad": false, "variant": false}, {"n": "배경화면_무료_다운로드.exe", "src": "처음 보는 사이트의 팝업 광고", "bad": true, "variant": true}, {"n": "체험학습_사진모음.zip", "src": "같은 반 친구가 학급 클라우드에 올림", "bad": false, "variant": false}, {"n": "무료쿠폰_받기.zip", "src": "모르는 사람이 메신저로 보냄", "bad": true, "variant": true}, {"n": "운영체제 보안 업데이트", "src": "운영체제가 띄운 공식 업데이트 알림", "bad": false, "variant": false}], "weak": ["1234", "gildong0412", "Password1!"], "common": ["1234", "12345", "123456", "1111", "0000", "password", "passw0rd", "qwerty", "abcd", "abc123", "1q2w3e", "asdf", "admin", "iloveyou", "dkssud", "qwer"], "pairs": [{"title": "독감·건강 정보", "p": "의료 정보", "g": "건강 상식", "ptxt": "내가 독감 진단을 받은 기록, 친구의 검사 결과", "gtxt": "독감 바이러스의 특징, 독감 예방법, 손 씻기 요령", "q": "특정한 사람의 몸 상태를 알려 주나요? 그러면 보호. 누구에게나 해당하는 일반 지식이면 공유.", "topic": "독감|감기|질병|병|건강|증상|예방접종|백신|아프|진료|검사|약|수면|손 씻"}, {"title": "돈 관련 정보", "p": "금융 정보", "g": "경제 정보", "ptxt": "내 계좌번호, 체크카드 번호와 비밀번호", "gtxt": "이번 주 환율, 지역 물가 통계, 금리 소식", "q": "내 돈에 접근할 수 있는 정보인가요? 그러면 보호. 모두에게 공개된 경제 소식이면 공유.", "topic": "환율|물가|금리|주가|경제|통장|계좌|카드|돈|대출|통계"}, {"title": "장소 관련 정보", "p": "위치 정보", "g": "지역 정보", "ptxt": "내가 지금 있는 곳, 내가 매일 다니는 길", "gtxt": "우리 동네 도서관 행사, 지역 축제 일정", "q": "특정한 사람이 어디 있는지 알려 주나요? 그러면 보호. 장소 자체를 소개하는 정보면 공유.", "topic": "위치|장소|동네|지역|길|도서관|축제|행사"}, {"title": "교통 정보", "p": "위치 정보", "g": "교통 정보", "ptxt": "내가 탄 버스의 실시간 이동 위치", "gtxt": "버스 노선 시간표, 도로 공사·정체 안내", "q": "누구의 이동인지 드러나나요? 그러면 보호. 모두가 쓰는 운행·도로 안내면 공유.", "topic": "버스|지하철|도로|교통|정체|노선|시간표"}, {"title": "일자리 정보", "p": "인적 정보", "g": "구인 정보", "ptxt": "내 이력서, 내 이름과 연락처가 적힌 지원서", "gtxt": "편의점 아르바이트 모집 공고, 청소년 인턴 채용 안내", "q": "지원하는 사람의 개인 정보인가요? 그러면 보호. 모집하는 쪽이 널리 알리는 공고면 공유.", "topic": "채용|모집|구인|알바|아르바이트|이력서|지원서"}, {"title": "해킹·바이러스 정보", "p": "", "g": "해킹 정보", "ptxt": "(남의 계정을 실제로 뚫도록 돕는 일은 하지 않아요)", "gtxt": "해킹 수법의 원리와 예방법, 새로 퍼진 컴퓨터 바이러스의 특징과 대처법", "q": "피해를 막는 데 도움이 되는 정보면 공유. 독감 바이러스는 건강 상식, 컴퓨터 바이러스는 컴퓨터 바이러스 정보예요.", "topic": "해킹|컴퓨터 바이러스|악성코드|랜섬"}, {"title": "개인을 알아볼 수 있는 정보", "p": "인적 정보", "g": "", "ptxt": "이름, 주민등록번호, 집 주소, 전화번호, 생일", "gtxt": "", "q": "이 정보만으로 누구인지 알 수 있나요? 그러면 보호.", "topic": "이름|주소|연락처|전화|생일|주민"}], "pers": "(^|\\s)(내|나의|제)\\s|친구|부모님|진료|진단|처방|검사 결과|기록|주민등록|번호|비밀번호|집 주소|실시간", "rule3": ["① 특정한 사람을 알아볼 수 있나요?", "② 공개되면 누군가 피해를 입나요?", "③ 널리 알리면 모두에게 도움이 되나요?"]};
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const caseById=id=>D.cases.find(c=>c.id===id);
+const THR=Object.keys(D.threats);
+
+/* ---------- 점검 함수 (순수 함수) ---------- */
+function checkConcept(t){t=t||'';const g=D.kw.concept.map(x=>new RegExp(x.re).test(t));
+  return {hits:g,ok:t.trim().length>=10&&g[0]&&(g[1]||g[2])}}
+function checkNeed(t){t=t||'';const g=D.kw.need.map(x=>new RegExp(x.re).test(t));
+  return {hits:g,ok:t.trim().length>=8&&g.some(Boolean)}}
+function matchFeats(c,texts){const used=new Set();const per=[];
+  texts.forEach(tx=>{tx=(tx||'').trim();let hit=-1;
+    if(tx.length>=6){let best=0;c.feats.forEach((f,i)=>{const n=f.kw.filter(k=>tx.includes(k)).length;if(n>best){best=n;hit=i}})}
+    per.push(hit);if(hit>=0)used.add(hit)});
+  return {per,count:used.size,ok:used.size>=2}}
+function checkThreat(c,pick,texts){const t=pick===c.threat;const m=matchFeats(c,texts);return {threat:t,feats:m,ok:t&&m.ok}}
+function checkTechConcept(tech,t){t=t||'';const T=D.tech[tech];const g=T.kw.map(k=>new RegExp(k).test(t));
+  return {hits:g,n:g.filter(Boolean).length,ok:t.trim().length>=10&&g.filter(Boolean).length>=2}}
+function checkPractices(tech,items){const T=D.tech[tech];const rw=new RegExp(D.kw.why),mw=new RegExp(T.hw);
+  const res=items.map(x=>{const m=(x.m||'').trim(),r=(x.r||'').trim();
+    return {m,r,hasM:m.length>=8,hasR:r.length>=6&&rw.test(r),tech:mw.test(m+' '+r)}});
+  const filled=res.filter(x=>x.hasM);const dup=new Set(filled.map(x=>x.m)).size<filled.length;
+  return {res,dup,n:res.filter(x=>x.hasM&&x.hasR).length,tn:res.filter(x=>x.tech).length,ok:res.filter(x=>x.hasM&&x.hasR).length>=3&&!dup}}
+const COMMON=new Set(D.common);
+function pwCheck(pw,personal){const L=pw.length;const lc=pw.toLowerCase();
+  const cls=[/[a-z]/,/[A-Z]/,/[0-9]/,/[^A-Za-z0-9]/].filter(r=>r.test(pw)).length;
+  const seq=/(0123|1234|2345|3456|4567|5678|6789|abcd|bcde|qwer|asdf)/i.test(pw)||/(.)\1{2,}/.test(pw);
+  const com=[...COMMON].some(w=>lc===w||(w.length>=4&&lc.includes(w)));
+  const per=(personal||'').split(/[\s,]+/).filter(w=>w.length>=2).some(w=>lc.includes(w.toLowerCase()));
+  const items=[{t:'길이 10자 이상',y:L>=10},{t:'문자 종류 3가지 이상 섞기(대·소문자, 숫자, 특수문자)',y:cls>=3},{t:'흔한 암호가 들어 있지 않기',y:L>0&&!com},{t:'1234·abcd·aaa처럼 규칙적이거나 반복되는 글자가 없기',y:L>0&&!seq},{t:'내 이름·생일 같은 개인 정보가 들어 있지 않기',y:L>0&&!per}];
+  const pool=(/[a-z]/.test(pw)?26:0)+(/[A-Z]/.test(pw)?26:0)+(/[0-9]/.test(pw)?10:0)+(/[^A-Za-z0-9]/.test(pw)?33:0);
+  const log10=L*Math.log10(Math.max(pool,1));let t;
+  if(!L)t='';else if(com||per||seq&&L<10)t='바로 알아낼 수 있음(흔한 패턴)';else{const s=log10-Math.log10(1e10)-Math.log10(2);
+    if(s<0)t='1초도 걸리지 않음';else if(s<Math.log10(60))t='몇 초';else if(s<Math.log10(3600))t='몇 분';else if(s<Math.log10(86400))t='몇 시간';else if(s<Math.log10(86400*365))t='몇 일~몇 달';else if(s<9)t='몇 년~수억 년 이상';else t='수십억 년 이상'}
+  return {items,score:items.filter(i=>i.y).length,t}}
+function acCheck(m){const r=D.ac.mn.map((row,i)=>row.map((v,j)=>m[i][j]===v));return {r,ok:r.every(x=>x.every(Boolean))}}
+function avRun(marks,rt,up){return D.av.map((f,i)=>{const inspect=marks[i]==='scan';const detect=f.bad&&(!f.variant||up);
+  let res,kind;
+  if(f.bad){ if(inspect){ if(detect){res='검사에서 발견·차단';kind='good'}else{res='새로운 변종이라 검사에서 놓침 → 최신 업데이트가 필요해요';kind='bad'}}
+    else{ if(rt&&detect){res='바로 열었지만 실시간 감시가 막아 줌';kind='good'}else{res='바로 열어서 감염됨';kind='bad'}}}
+  else{ if(inspect){res='검사 결과 정상(안전)';kind='good'}else{res='정상 파일이라 문제없음 — 그래도 출처가 확실한지 먼저 살피는 습관이 좋아요';kind='info'}}
+  return {res,kind}})}
+function clsAnswer(cat,pick){return cat.t===pick}
+function guessCat(text){text=text||'';const pers=new RegExp(D.pers).test(text);
+  if(/군부대|군사|여행|맛집|빵집|분식|식당|미세먼지|분리배출/.test(text))return null;
+  if(/업데이트/.test(text)&&/백신/.test(text))return {cat:'컴퓨터 바이러스 정보',pair:5};
+  if(/컴퓨터 바이러스|악성코드|랜섬/.test(text))return {cat:'컴퓨터 바이러스 정보',pair:5};
+  if(/해킹/.test(text))return {cat:'해킹 정보',pair:5};
+  if(/태풍|지진|재난|홍수|대피/.test(text))return {cat:'재난 정보',pair:null};
+  for(const k of [3,0,1,4,6,2]){const p=D.pairs[k];if(new RegExp(p.topic).test(text)){
+    if(k===6)return {cat:p.p,pair:k};
+    if(k===3&&!pers)return {cat:p.g,pair:k};
+    if(k===0&&/바이러스/.test(text)&&!pers)return {cat:p.g,pair:k};
+    return {cat:pers?p.p:(p.g||p.p),pair:k}}}
+  return null}
+
+/* ---------- 상태 ---------- */
+const S={cls:{order:shuffle(D.cats.map((_,i)=>i)),ans:{},mine:[]},
+ cases:{cur:0,pick:{},txt:{},extra:{},done:{},show:{}},concept:{},tech:{lab:'pw',pw:'',per:'',pwq:{},ac:D.ac.files.map(()=>D.ac.roles.map(()=>0)),acfb:null,avm:D.av.map(()=>'open'),rt:false,up:false,avres:null,tc:{}},
+ eth:{tech:0,thr:null,items:[{m:'',r:''},{m:'',r:''},{m:'',r:''}],fb:null},mock:null};
+const ROUTES=[['home','처음'],['cls','① 정보 분류'],['concept','② 개념·필요성'],['cases','③ 위협 알아보기'],['tech','④ 보안 기술 실습'],['eth','⑤ 디지털 윤리 실천'],['mock','모의 수행평가'],['key','모범 답안']];
+function nav(r){$('#nav').innerHTML=ROUTES.map(([k,n])=>`<a href="#${k}" class="${k===r?'on':''}">${n}</a>`).join('')}
+
+/* ---------- 화면 ---------- */
+const V={};
+V.home=()=>`<div class="card"><h2>차근차근, 직접 해 보며 익혀요</h2><p>연습지의 1~5번을 순서대로 연습하는 곳이에요. 정답을 바로 알려 주는 것보다 <b>내 생각을 써 보고 점검</b>하는 데 초점을 두었어요. 사례는 연습용으로 새로 만든 것이며 실제 평가 문항과 달라요.</p></div>
+<div class="steps">
+<a href="#cls"><b>① 정보 분류</b><br><span class="note">보호해야 할 정보와 공유해야 할 정보를 구분하고, 내가 만든 정보 카드도 점검해요.</span></a>
+<a href="#concept"><b>② 개념·필요성</b><br><span class="note">정보보안의 개념을 쓰고 필요성을 1가지 이상 써 봐요.</span></a>
+<a href="#cases"><b>③ 위협 알아보기</b><br><span class="note">사례를 읽고 디도스·악성코드·해킹·파밍 중 무엇인지, 특징은 무엇인지 써 봐요.</span></a>
+<a href="#tech"><b>④ 보안 기술 실습</b><br><span class="note">암호 만들기, 접근 권한 정하기, 백신 검사를 직접 해 봐요.</span></a>
+<a href="#eth"><b>⑤ 디지털 윤리 실천</b><br><span class="note">선택한 기술과 연결해 실천 방법을 3가지 써 봐요.</span></a>
+<a href="#mock"><b>모의 수행평가</b><br><span class="note">1~5번을 한 번에 풀고 점검해 봐요.</span></a></div>`;
+
+function guessNote(m){const g=m.g;if(!g||g.cat===m.cat)return '';const gc=D.cats.find(x=>x.n===g.cat);if(!gc)return '';const p=D.pairs[g.pair];
+  return `<div class="fb info" style="flex-basis:100%"><b>내용을 다시 살펴봐요.</b> ‘${esc(m.text)}’은(는) <b>${esc(g.cat)}</b>(<span class="tag ${gc.t}">${gc.t==='P'?'보호':'공유'}</span>)에 더 가까울 수 있어요. 고른 종류(${esc(m.cat)})로 판단하면 결과가 달라져요.${p?` ${esc(p.q)}`:''} 내용이 <b>나에 대한 정보인지, 모두에게 해당하는 일반 정보인지</b>를 먼저 가려 보세요.</div>`}
+function pairsCard(){return `<div class="card"><h2>헷갈리기 쉬운 정보 비교</h2><p class="note">같은 주제라도 <b>나(특정한 사람)에 대한 정보</b>인지 <b>모두에게 해당하는 일반 정보</b>인지에 따라 보호와 공유가 달라져요. 먼저 이렇게 물어보세요.</p><ul class="small">${D.rule3.map(x=>`<li>${x}</li>`).join('')}</ul>
+ ${D.pairs.map(p=>`<div class="cat" style="align-items:flex-start"><div style="flex:1 1 100%"><b>${esc(p.title)}</b></div>${p.ptxt?`<div style="flex:1 1 240px"><span class="tag P">보호</span> ${p.p?`<b>${esc(p.p)}</b><br>`:''}<span class="small">${esc(p.ptxt)}</span></div>`:''}${p.gtxt?`<div style="flex:1 1 240px"><span class="tag S">공유</span> <b>${esc(p.g)}</b><br><span class="small">${esc(p.gtxt)}</span></div>`:''}<div class="note small" style="flex:1 1 100%">👉 ${esc(p.q)}</div></div>`).join('')}</div>`}
+V.cls=()=>{const st=S.cls;const done=Object.keys(st.ans).length;const right=Object.entries(st.ans).filter(([i,p])=>clsAnswer(D.cats[i],p)).length;
+ const rows=st.order.map(i=>{const c=D.cats[i],a=st.ans[i];const ex=c.ex[i%2];
+  let fb='';if(a){const ok=clsAnswer(c,a);fb=`<div class="fb ${ok?'good':'bad'}" style="flex-basis:100%">${ok?'맞았어요. ':'다시 생각해 봐요. '}<b>${esc(c.n)}</b>은(는) <span class="tag ${c.t}">${c.t==='P'?'보호':'공유'}</span> 정보예요. ${esc(c.why)}</div>`}
+  return `<div class="cat"><div><b>${esc(c.n)}</b><div class="note small">예: ${esc(ex)}</div></div><div class="row"><button data-a="cls" data-i="${i}" data-p="P" class="${a==='P'?(clsAnswer(c,'P')?'ok':'no'):''}">보호</button><button data-a="cls" data-i="${i}" data-p="S" class="${a==='S'?(clsAnswer(c,'S')?'ok':'no'):''}">공유</button></div>${fb}</div>`}).join('');
+ const mine=st.mine.map(m=>{const c=D.cats.find(x=>x.n===m.cat);return `<div class="cat"><div><b>${esc(m.text)}</b><div class="note small">내가 고른 종류: ${esc(m.cat)} · 내 판단: ${m.p==='P'?'보호':'공유'}</div></div><div>${c.t===m.p?`<span class="tag ${c.t}">일치 ✔ ${c.t==='P'?'보호':'공유'}</span>`:`<span class="tag ${c.t}">교과서는 ${c.t==='P'?'보호':'공유'}</span>`}</div><div class="fb ${c.t===m.p?'good':'bad'}" style="flex-basis:100%">${esc(c.why)}</div>${guessNote(m)}</div>`}).join('');
+ return `<div class="card"><h2>① 보호해야 할 정보 vs 공유해야 할 정보</h2><p class="note">정보의 종류마다 보호할지 공유할지 골라 보세요. 맞는지 바로 알려 줘요. (개인정보와 저작권이 있는 저작물은 보호, 공공의 이익이 되는 정보는 공유예요.)</p>
+ <div class="row"><b>맞힌 개수 ${right} / ${done} (전체 ${D.cats.length})</b><button data-a="clsreset">다시 섞기</button></div>${rows}</div>
+ <div class="card"><h2>내 정보 카드 만들기</h2><p class="note">연습지처럼 정보 내용을 직접 써 보고, 어떤 종류이며 보호인지 공유인지 점검해요. 친구들과 서로 비교해 보세요.</p>
+ <label for="mtext">정보 내용 (예: 우리 동네 버스 시간표)</label><input type="text" id="mtext" placeholder="정보 내용을 써 보세요" maxlength="60">
+ <div class="grid2"><div><label for="mcat">정보의 종류</label><select id="mcat"><option value="">— 종류를 골라 주세요 —</option>${D.cats.map(c=>`<option>${esc(c.n)}</option>`).join('')}</select></div>
+ <div><label>내 판단</label><div class="row"><button data-a="mine" data-p="P">보호</button><button data-a="mine" data-p="S">공유</button></div></div></div>
+ <div id="mfb"></div>${mine}</div>${pairsCard()}`};
+
+V.concept=()=>{const c=S.concept;let fb='';
+ if(c.done){const a=checkConcept(c.c),b=checkNeed(c.n);const li=(arr,ok,txt)=>arr.map((h,i)=>`<li class="${h?'y':'n'}">${esc(txt[i].label)}</li>`).join('');
+  fb=`<div class="card"><b>개념 점검</b><ul class="chk">${li(a.hits,0,D.kw.concept)}</ul><div class="fb ${a.ok?'good':'warn'}">${a.ok?'개념에 필요한 핵심이 들어 있어요.':'‘무엇을’, ‘어떤 위협으로부터’, ‘어떻게’ 지키는지가 드러나게 써 보세요.'}</div>
+  <b>필요성 점검</b><ul class="chk">${li(b.hits,0,D.kw.need)}</ul><div class="fb ${b.ok?'good':'warn'}">${b.ok?'필요성이 1가지 이상 드러나요.':'정보가 새거나 바뀌면 어떤 피해가 생기는지 써 보세요.'}</div>
+  <div class="fb info"><b>예시 답</b><br>개념: ${esc(D.q2ex.concept)}<br>필요성: ${esc(D.q2ex.need)}</div><p class="note small">내 말로 쓴 답도 괜찮아요. 위 점검은 핵심 낱말이 있는지 보는 도우미예요.</p></div>`}
+ return `<div class="card"><h2>② 정보보안의 개념과 필요성</h2><label for="cc">개념 (정보보안이란?)</label><textarea id="cc">${esc(c.c||'')}</textarea><label for="cn">필요성 (1가지 이상)</label><textarea id="cn">${esc(c.n||'')}</textarea><div class="row" style="margin-top:10px"><button class="pri" data-a="concept">점검하기</button></div></div>${fb}`};
+
+function passage(cs,show){let t=esc(cs.text);if(show)cs.feats.forEach((f,i)=>f.ev.forEach(e=>{const x=esc(e);t=t.replace(x,`<mark class="m${i}">${x}</mark>`)}));return t}
+V.cases=()=>{const st=S.cases;const id=D.order[st.cur];const cs=caseById(id);const pick=st.pick[id];const nf=st.extra[id]?3:2;const done=st.done[id];const shown=!!done||!!st.show[id];
+ const tabs=D.order.map((x,i)=>`<button data-a="case" data-i="${i}" class="${i===st.cur?'sel':''}" style="padding:4px 10px;font-size:13px">${caseById(x).kind==='sheet'?(x==='S1'?'[가]':'[나]'):(i-1)}</button>`).join('');
+ const th=THR.map(t=>`<button data-a="thr" data-t="${t}" class="${done?(t===cs.threat?'ok':(t===pick?'no':'')):(t===pick?'sel':'')}">${t}</button>`).join('');
+ let fb='';
+ if(done){const r=done;fb=`<div class="fb ${r.threat?'good':'bad'}">위협 요소: ${r.threat?'맞았어요! ':'정답은 '}<b>${cs.threat}</b>${r.threat?'':'이에요.'} ${esc(D.threats[cs.threat].vs)}</div>
+  <div class="fb ${r.feats.ok?'good':'warn'}">특징 쓰기: 사례와 연결된 특징이 ${r.feats.count}가지 확인됐어요. ${r.feats.ok?'2가지 이상 잘 썼어요.':'사례의 어떤 부분이 이 위협의 특징인지 2가지 이상 써 보세요.'}${r.threat?'':' (위협 요소가 달라서 특징도 사례와 다시 맞춰 봐요.)'}</div>
+  `}
+ if(shown){fb+=`<div class="card" style="background:var(--paper)"><b>모범 답안</b> — 위협 요소: <b>${cs.threat}</b><ul>${cs.feats.map((f,i)=>`<li><mark class="m${i}">${esc(f.t)}</mark></li>`).join('')}</ul><p class="note small">사례의 근거에 같은 색으로 표시했어요. 특징은 3가지 중 2가지 이상 쓰면 돼요. · 정의: ${esc(D.threats[cs.threat].df)} ${esc(D.threats[cs.threat].vs)}</p></div>`}
+ const boxes=Array.from({length:nf},(_,i)=>`<label for="ft${i}">특징 ${i+1} (사례와 관련지어)</label><textarea id="ft${i}">${esc((st.txt[id]||[])[i]||'')}</textarea>`).join('');
+ return `<div class="card"><h2>③ 정보보안 위협 알아보기</h2><div class="row" style="margin-bottom:8px">${tabs}</div>
+ <p class="note small">연습지 [가]·[나] 다음에 연습 사례가 이어져요. 사례를 읽고 ① 위협 요소를 고르고 ② 사례와 관련지어 특징을 2가지 이상 써 보세요.</p>
+ <div class="passage">${passage(cs,shown)}</div>
+ <b>어떤 위협 요소일까요?</b><div class="row" style="margin:6px 0">${th}</div>
+ <details><summary class="note">4가지 위협의 뜻 보기</summary><ul class="small">${THR.map(t=>`<li><b>${t}</b>: ${esc(D.threats[t].df)}</li>`).join('')}</ul></details>
+ ${boxes}<div class="row" style="margin-top:10px"><button class="pri" data-a="casechk">점검하기</button>${st.extra[id]?'':'<button data-a="addft">특징 한 칸 더</button>'}<button data-a="hint">힌트</button><button data-a="casekey">모범 답안 보기</button><button data-a="casenext">다음 사례 ▶</button></div><div id="hint"></div>${fb}</div>`};
+
+V.tech=()=>{const st=S.tech;const labs=[['pw','개인 암호 설정·변경'],['ac','기기·클라우드 접근 제어'],['av','바이러스 백신 설정']];
+ const head=`<div class="card"><h2>④ 정보보안 기술 실습</h2><div class="row">${labs.map(([k,n])=>`<button data-a="lab" data-k="${k}" class="${st.lab===k?'sel':''}">${n}</button>`).join('')}</div></div>`;
+ const tn=st.lab==='pw'?D.techs[0]:st.lab==='ac'?D.techs[1]:D.techs[2];
+ const concept=`<div class="card"><b>내가 이해한 ‘${tn}’의 개념</b><p class="note small">실습한 뒤, 이 기술이 무엇이고 무엇을 하는지 써 보세요.</p><textarea id="tcx">${esc(st.tc[tn]||'')}</textarea><div class="row" style="margin-top:8px"><button class="pri" data-a="tcx">개념 점검</button></div><div id="tcfb"></div></div>`;
+ let body='';
+ if(st.lab==='pw'){const r=pwCheck(st.pw,st.per);const col=r.score>=5?'var(--green)':r.score>=3?'var(--amber)':'var(--red)';
+  const qs=[['공용 컴퓨터에서 로그인했다면, 쓰고 나서 로그아웃하고 암호를 저장하지 않는다.',true],['암호를 여러 사이트에서 똑같이 쓰면 편하고 안전하다.',false],['친한 친구에게는 내 암호를 알려 줘도 된다.',false],['사이트에서 유출 사고가 알려지면 암호를 바꾼다.',true]];
+  body=`<div class="card"><b>암호 만들어 보기</b><p class="note small">여기에 쓴 글자는 이 화면 안에서만 점검하고 저장하거나 보내지 않아요. 그래도 <b>실제로 쓰는 암호는 넣지 말고</b> 연습용으로 만들어 보세요.</p>
+  <label for="per">내 이름·생일 등 (암호에 넣으면 안 되는 낱말, 쉼표로 구분)</label><input type="text" id="per" value="${esc(st.per)}" placeholder="예: 홍길동, 0412">
+  <label for="pw">연습용 암호</label><input type="text" id="pw" value="${esc(st.pw)}" autocomplete="off" placeholder="암호를 입력해 보세요">
+  <div class="bar" style="margin:10px 0"><i style="width:${r.score*20}%;background:${col}"></i></div>
+  <ul class="chk">${r.items.map(i=>`<li class="${i.y?'y':'n'}">${i.t}</li>`).join('')}</ul>
+  ${st.pw?`<div class="fb info">컴퓨터가 초당 100억 번 추측한다고 가정하면 알아내는 데: <b>${r.t}</b></div>`:''}
+  <p class="note small">‘길이’와 ‘섞기’가 늘수록 추측해야 할 경우의 수가 크게 늘어요. 외우기 쉽게 문장의 첫 글자를 모아 만드는 방법도 있어요.</p></div>
+  <div class="card"><b>암호 습관 O/X</b>${qs.map((q,i)=>{const a=st.pwq[i];return `<div class="cat"><div style="flex:1;min-width:200px">${q[0]}</div><div class="row"><button data-a="pwq" data-i="${i}" data-v="1" class="${a===1?(q[1]?'ok':'no'):''}">O</button><button data-a="pwq" data-i="${i}" data-v="0" class="${a===0?(!q[1]?'ok':'no'):''}">X</button></div>${a!==undefined?`<div class="fb ${(a===1)===q[1]?'good':'bad'}" style="flex-basis:100%">정답은 ${q[1]?'O':'X'}예요.</div>`:''}</div>`}).join('')}</div>`}
+ if(st.lab==='ac'){const lab=['✕ 접근 불가','읽기','편집'];
+  body=`<div class="card"><b>누구에게 어떤 권한을 줄까요?</b><p class="note small">칸을 눌러 <b>‘접근 불가 → 읽기 → 편집’</b>으로 바꾸세요. 꼭 필요한 만큼만 주는 것이 원칙이에요(최소 권한).</p>
+  <div style="overflow-x:auto"><table class="ac"><tr><th></th>${D.ac.roles.map(r=>`<th>${r}</th>`).join('')}</tr>
+  ${D.ac.files.map((f,i)=>`<tr><th style="text-align:left">${f}</th>${D.ac.roles.map((_,j)=>{const ok=st.acfb&&st.acfb.r[i][j];return `<td><button data-a="ac" data-i="${i}" data-j="${j}" class="${st.acfb?(ok?'ok':'no'):''}">${lab[st.ac[i][j]]}</button></td>`}).join('')}</tr>`).join('')}</table></div>
+  <div class="row" style="margin-top:10px"><button class="pri" data-a="accheck">점검하기</button><button data-a="acreset">처음으로</button><button data-a="ackey">모범 답안 보기</button></div>${st.ackey?`<div class="fb info"><b>모범 답안</b><table class="ac" style="background:var(--card);margin-top:6px"><tr><th></th>${D.ac.roles.map(r=>`<th>${r}</th>`).join('')}</tr>${D.ac.files.map((f,i)=>`<tr><th style="text-align:left">${f}</th>${D.ac.mn[i].map(v=>`<td>${lab[v]}</td>`).join('')}</tr>`).join('')}</table></div>`:''}
+  ${st.acfb?`<div class="fb ${st.acfb.ok?'good':'warn'}">${st.acfb.ok?'모두 알맞아요! 필요한 사람에게 필요한 만큼만 권한을 줬어요.':'빨간 칸을 다시 생각해 보세요. 아래 설명을 읽고 고쳐 보세요.'}</div>`:''}
+  <ul class="small">${D.ac.files.map((f,i)=>`<li><b>${f}</b>: ${D.ac.note[i]}</li>`).join('')}</ul></div>`}
+ if(st.lab==='av'){body=`<div class="card"><b>파일을 열기 전에 어떻게 할까요?</b><p class="note small">각 파일을 ‘바로 열기’ 또는 ‘검사 후 열기’로 고르고 실행해 보세요. 그다음 아래 두 가지 설정을 바꿔서 결과가 어떻게 달라지는지 비교해 보세요.</p>
+  <div class="sw-row" style="margin:8px 0"><label class="sw"><input type="checkbox" id="rt" ${st.rt?'checked':''}>실시간 감시 켜기</label><label class="sw"><input type="checkbox" id="up" ${st.up?'checked':''}>최신 업데이트 적용</label></div>
+  <div class="files">${D.av.map((f,i)=>{const r=st.avres&&st.avres[i];return `<div class="f"><div style="flex:1;min-width:200px"><b>${esc(f.n)}</b><div class="note small">${esc(f.src)}</div></div><div class="row"><button data-a="avm" data-i="${i}" data-v="open" class="${st.avm[i]==='open'?'sel':''}">바로 열기</button><button data-a="avm" data-i="${i}" data-v="scan" class="${st.avm[i]==='scan'?'sel':''}">검사 후 열기</button></div>${r?`<div class="fb ${r.kind}" style="flex-basis:100%">${r.res}</div>`:''}</div>`}).join('')}</div>
+  <div class="row" style="margin-top:10px"><button class="pri" data-a="avrun">실행</button></div>
+  <p class="note small">백신은 이미 알려진 악성 프로그램의 특징으로 찾아내요. 새 변종은 <b>업데이트</b>가 있어야 찾고, <b>실시간 감시</b>는 열려는 순간 막아 줘요. 그래도 출처가 불분명한 파일은 열지 않는 것이 가장 좋아요.</p></div>`}
+ return head+body+concept};
+
+V.eth=()=>{const st=S.eth;const tn=D.techs[st.tech];const T=D.tech[tn];let fb='';
+ if(st.fb){const f=st.fb;fb=`<div class="card"><b>점검 결과</b><ul class="chk">${f.res.map((x,i)=>`<li class="${x.hasM&&x.hasR?'y':'n'}">실천 ${i+1}: ${x.hasM?(x.hasR?'방법과 이유가 모두 있어요'+(x.tech?' · 선택한 기술과 연결됐어요':' · 선택한 기술과 어떻게 연결되는지 덧붙여 보세요'):'이유를 더 구체적으로 써 보세요(누구의 어떤 피해를 막는지)'):'방법을 한 문장으로 써 보세요'}</li>`).join('')}</ul>${f.dup?'<div class="fb warn">똑같은 방법이 있어요. 서로 다른 3가지를 써 보세요.</div>':''}<div class="fb ${f.ok?'good':'warn'}">${f.ok?'서로 다른 3가지를 방법과 이유로 잘 썼어요.':'3가지 모두 ‘방법 + 이유’로 써 보세요.'}</div>
+  <div class="fb info"><b>예시</b><ul class="small">${T.ex.map(e=>`<li>${esc(e)}</li>`).join('')}</ul></div></div>`}
+ return `<div class="card"><h2>⑤ 디지털 윤리 실천 방법</h2><p class="note">정보보안 위협을 예방하기 위해 내가 실천할 수 있는 디지털 윤리를 3가지 써 보세요. 선택한 보안 기술을 활용하고, <b>방법과 이유</b>를 함께 쓰면 좋아요. 사례와 연결되면 더 좋아요.</p>
+ <b>선택한 기술</b><div class="row" style="margin:6px 0">${D.techs.map((t,i)=>`<button data-a="ethtech" data-i="${i}" class="${i===st.tech?'sel':''}">${t}</button>`).join('')}</div><div class="fb info">${esc(T.hint)}</div>
+ <b>예방하려는 위협</b><div class="row" style="margin:6px 0">${THR.map(t=>`<button data-a="ethThr" data-t="${t}" class="${st.thr===t?'sel':''}">${t}</button>`).join('')}</div>
+ ${st.items.map((it,i)=>`<label for="em${i}">실천 ${i+1} — 방법</label><input type="text" id="em${i}" value="${esc(it.m)}"><label for="er${i}">이유</label><input type="text" id="er${i}" value="${esc(it.r)}">`).join('')}
+ <div class="row" style="margin-top:10px"><button class="pri" data-a="ethchk">점검하기</button></div></div>${fb}`};
+
+
+V.key=()=>{const lab=['접근 불가','읽기','편집'];
+ const cat=t=>D.cats.filter(c=>c.t===t).map(c=>`<tr><td><b>${esc(c.n)}</b></td><td>${esc(c.why)}</td></tr>`).join('');
+ const cs=D.order.map(id=>{const c=caseById(id);const nm=c.kind==='sheet'?(id==='S1'?'연습지 [가]':'연습지 [나]'):'연습 사례 '+(D.order.indexOf(id)-1);
+  return `<details class="card"><summary><b>${nm}</b> — <span class="tag P">${c.threat}</span></summary><div class="passage">${passage(c,true)}</div><ul>${c.feats.map((f,i)=>`<li><mark class="m${i}">${esc(f.t)}</mark></li>`).join('')}</ul><p class="note small">${esc(D.threats[c.threat].vs)}</p></details>`}).join('');
+ return `<div class="card"><h2>모범 답안 모음</h2><p class="note">먼저 직접 풀어 본 뒤에 확인하세요. 내 말로 쓴 답도 핵심이 같으면 맞는 답이에요. 아래 제목을 눌러 펼쳐 보세요.</p></div>
+ <details class="card"><summary><b>① 정보 분류 — 16종</b></summary><h3>보호해야 할 정보 <span class="tag P">보호</span></h3><table class="ac">${cat('P')}</table><h3>공유해야 할 정보 <span class="tag S">공유</span></h3><table class="ac">${cat('S')}</table>
+ <h3>헷갈리기 쉬운 정보</h3>${D.pairs.map(p=>`<p class="small"><b>${esc(p.title)}</b> — ${p.p&&p.ptxt?`<span class="tag P">보호</span> ${esc(p.ptxt)} `:''}${p.g&&p.gtxt?`<span class="tag S">공유</span> ${esc(p.gtxt)}`:''}<br>👉 ${esc(p.q)}</p>`).join('')}</details>
+ <details class="card"><summary><b>② 개념과 필요성</b></summary><p><b>개념</b>: ${esc(D.q2ex.concept)}</p><p><b>필요성</b>: ${esc(D.q2ex.need)}</p><p class="note small">개념에는 ‘지킨다’, ‘위협(무단 접근·유출·변조·파괴)’, ‘안전하게 관리’의 뜻이 들어가면 좋아요. 필요성은 개인·금전 피해 예방, 정보의 신뢰, 서비스·사회의 안전 중 1가지 이상이면 돼요.</p></details>
+ <details class="card"><summary><b>③ 위협 4종의 정의</b></summary><table class="ac">${THR.map(k=>`<tr><td><b>${k}</b></td><td style="text-align:left">${esc(D.threats[k].df)}<br><span class="note small">${esc(D.threats[k].vs)}</span></td></tr>`).join('')}</table></details>
+ <div class="card"><b>③ 사례별 모범 답안 (14개)</b><p class="note small">근거에 같은 색으로 표시했어요. 특징은 3가지 중 2가지 이상 쓰면 돼요.</p></div>${cs}
+ <details class="card"><summary><b>④ 보안 기술</b></summary>${D.techs.map(tn=>`<h3>${esc(tn)}</h3><p>${esc(D.tech[tn].hint)}</p><p class="note small">개념에 들어가면 좋은 요소: ${D.tech[tn].kwl.map(esc).join(' / ')}</p>`).join('')}
+ <h3>접근 제어 실습 정답(최소 권한)</h3><div style="overflow-x:auto"><table class="ac"><tr><th></th>${D.ac.roles.map(r=>`<th>${r}</th>`).join('')}</tr>${D.ac.files.map((f,i)=>`<tr><th style="text-align:left">${f}</th>${D.ac.mn[i].map(v=>`<td>${lab[v]}</td>`).join('')}</tr>`).join('')}</table></div><ul class="small">${D.ac.note.map(esc).map(n=>`<li>${n}</li>`).join('')}</ul>
+ <h3>백신 검사 실습</h3><table class="ac"><tr><th>파일</th><th>출처</th><th>정답</th></tr>${D.av.map(f=>`<tr><td>${esc(f.n)}</td><td>${esc(f.src)}</td><td>${f.bad?'악성':'정상'}${f.variant?' (새 변종: 업데이트가 있어야 검사에서 발견)':''}</td></tr>`).join('')}</table>
+ <h3>암호 만들기 기준</h3><ul class="small"><li>길이 10자 이상</li><li>문자 종류 3가지 이상 섞기</li><li>흔한 암호·규칙적인 글자·개인 정보를 쓰지 않기</li></ul></details>
+ <details class="card"><summary><b>⑤ 디지털 윤리 실천 예시 (방법 → 이유)</b></summary>${D.techs.map(tn=>`<h3>${esc(tn)}</h3><ul class="small">${D.tech[tn].ex.map(e=>`<li>${esc(e)}</li>`).join('')}</ul>`).join('')}<p class="note small">다른 방법도 괜찮아요. 선택한 보안 기술을 활용하고 방법과 이유를 함께 쓰면 돼요.</p></details>`};
+
+/* 모의 수행평가 */
+function newMock(){const cats=shuffle(D.cats).slice(0,8);const ps=D.order.map(caseById).filter(c=>c.kind==='practice');let a=ps[Math.floor(Math.random()*ps.length)],b;do{b=ps[Math.floor(Math.random()*ps.length)]}while(b.threat===a.threat);
+ return {cats,a:a.id,b:b.id,done:false,r:null}}
+V.mock=()=>{if(!S.mock)S.mock=newMock();const m=S.mock;const ca=caseById(m.a),cb=caseById(m.b);const dis=m.done?'disabled':'';
+ const tr=(cs,k)=>`<div class="passage">${esc(cs.text)}</div><div class="row" style="margin:6px 0">${THR.map(t=>`<label class="sw"><input type="radio" name="th${k}" value="${t}" ${dis}>${t}</label>`).join('')}</div><label for="f${k}0">특징 1 (사례와 관련지어)</label><textarea id="f${k}0" ${dis}></textarea><label for="f${k}1">특징 2</label><textarea id="f${k}1" ${dis}></textarea>`;
+ const q1=m.cats.map((c,i)=>`<div class="cat"><b>${esc(c.n)}</b><div class="row"><label class="sw"><input type="radio" name="q1_${i}" value="P" ${dis}>보호</label><label class="sw"><input type="radio" name="q1_${i}" value="S" ${dis}>공유</label></div></div>`).join('');
+ return `<div class="card"><h2>모의 수행평가</h2><p class="note">연습지 1~5번을 한 번에 풀어 보세요. 풀고 나서 ‘점검하기’를 누르면 항목별로 알려 줘요. 점수가 아니라 <b>연습 도달 정도</b>를 보여 주는 점검이에요.</p><button data-a="mocknew">새 문제 받기</button></div>
+ <div class="card"><h3>1. 아래 정보를 보호해야 할 정보와 공유해야 할 정보로 구분하세요.</h3>${q1}</div>
+ <div class="card"><h3>2. 정보보안의 개념을 쓰고, 필요성을 1가지 이상 쓰세요.</h3><label for="m2c">개념</label><textarea id="m2c" ${dis}></textarea><label for="m2n">필요성</label><textarea id="m2n" ${dis}></textarea></div>
+ <div class="card"><h3>3. [가] 사례의 정보보안 위협 요소와 특징 2가지를 쓰세요.</h3>${tr(ca,'a')}</div>
+ <div class="card"><h3>4. [나] 사례의 정보보안 위협 요소와 특징 2가지를 쓰세요.</h3>${tr(cb,'b')}</div>
+ <div class="card"><h3>5. 보안 기술을 1가지 고르고 개념을 쓴 뒤, 디지털 윤리 실천 방법 3가지를 쓰세요.</h3>
+ <div class="row">${D.techs.map((t,i)=>`<label class="sw"><input type="radio" name="m5t" value="${i}" ${i===0?'checked':''} ${dis}>${t}</label>`).join('')}</div>
+ <label for="m5c">선택한 기술의 개념</label><textarea id="m5c" ${dis}></textarea>
+ ${[0,1,2].map(i=>`<label for="m5m${i}">실천 ${i+1} — 방법</label><input type="text" id="m5m${i}" ${dis}><label for="m5r${i}">이유</label><input type="text" id="m5r${i}" ${dis}>`).join('')}</div>
+ <div class="row"><button class="pri" data-a="mockchk" ${dis}>점검하기</button></div><div id="mres">${m.done?mockResult(m.r):''}</div>`};
+function level(n,t){const r=n/t;return r>=0.99?['충분히 도달','good']:r>=0.65?['대체로 도달','info']:['더 연습해요','warn']}
+function mockResult(r){const l1=level(r.e1,r.t1),l2=level(r.e2,r.t2);
+ return `<div class="card"><h3>점검 결과</h3><div class="fb ${l1[1]}"><b>정보보안 위협 요소 설명하기</b> (2·3·4번) — ${l1[0]} (${r.e1}/${r.t1})<br><span class="small">${r.d1.join(' · ')}</span></div>
+ <div class="fb ${l2[1]}"><b>정보보안 기술 활용하여 디지털 윤리 실천하기</b> (1·5번) — ${l2[0]} (${r.e2}/${r.t2})<br><span class="small">${r.d2.join(' · ')}</span></div>
+ <div class="fb info"><b>1번 정답</b>: ${r.q1k.map(esc).join(' / ')}<br><b>3번 위협 요소</b>: ${esc(r.th[0])} · <b>4번 위협 요소</b>: ${esc(r.th[1])}<br><b>3번 모범 특징</b>: ${r.fa.map(esc).join(' / ')}<br><b>4번 모범 특징</b>: ${r.fb.map(esc).join(' / ')}<br><b>2번 예시</b>: ${esc(D.q2ex.concept)} ${esc(D.q2ex.need)}</div>
+ <p class="note small">자동 점검은 낱말 중심의 도우미예요. 내 말로 정확히 쓴 답은 선생님이 최종적으로 판단해요.</p></div>`}
+function runMock(){const m=S.mock;const v=id=>(($('#'+id)||{}).value||'');const rad=n=>{const e=document.querySelector(`input[name="${n}"]:checked`);return e?e.value:null};
+ const ca=caseById(m.a),cb=caseById(m.b);const d1=[],d2=[];let e1=0,e2=0;
+ const c1=m.cats.filter((c,i)=>rad('q1_'+i)===c.t).length;const q1k=m.cats.map(c=>c.n+'('+(c.t==='P'?'보호':'공유')+')');if(c1>=7)e2++;d2.push(`1번 분류 ${c1}/8`+(c1>=7?' ✔':''));
+ const cc=checkConcept(v('m2c')),nn=checkNeed(v('m2n'));if(cc.ok)e1++;if(nn.ok)e1++;d1.push('2번 개념 '+(cc.ok?'✔':'✘'),'2번 필요성 '+(nn.ok?'✔':'✘'));
+ const ra=checkThreat(ca,rad('tha'),[v('fa0'),v('fa1')]),rb=checkThreat(cb,rad('thb'),[v('fb0'),v('fb1')]);
+ if(ra.threat)e1++;if(ra.feats.ok)e1++;if(rb.threat)e1++;if(rb.feats.ok)e1++;
+ d1.push('3번 위협 '+(ra.threat?'✔':'✘ 정답 '+ca.threat),'3번 특징 '+(ra.feats.ok?'✔':'✘'),'4번 위협 '+(rb.threat?'✔':'✘ 정답 '+cb.threat),'4번 특징 '+(rb.feats.ok?'✔':'✘'));
+ const tn=D.techs[+rad('m5t')||0];const tcc=checkTechConcept(tn,v('m5c'));if(tcc.ok)e2++;d2.push('5번 기술 개념 '+(tcc.ok?'✔':'✘'));
+ const pr=checkPractices(tn,[0,1,2].map(i=>({m:v('m5m'+i),r:v('m5r'+i)})));if(pr.ok)e2++;if(pr.tn>=2)e2++;
+ d2.push('실천 방법+이유 '+pr.n+'/3'+(pr.ok?' ✔':''),'기술과 연결 '+pr.tn+'/3'+(pr.tn>=2?' ✔':''));
+ return {q1k,th:[ca.threat,cb.threat],e1,t1:6,e2,t2:4,d1,d2,fa:ca.feats.map(f=>f.t),fb:cb.feats.map(f=>f.t)}}
+
+/* ---------- 이벤트 ---------- */
+function val(id){const e=$('#'+id);return e?e.value:''}
+function saveCaseTxt(){const id=D.order[S.cases.cur];const arr=[];for(let i=0;i<3;i++){const e=$('#ft'+i);if(e)arr.push(e.value)}S.cases.txt[id]=arr}
+const A={
+ cls(el){S.cls.ans[el.dataset.i]=el.dataset.p;render(true)},
+ clsreset(){S.cls={order:shuffle(D.cats.map((_,i)=>i)),ans:{},mine:S.cls.mine};render()},
+ mine(el){const t=val('mtext').trim();if(!t){$('#mfb').innerHTML='<div class="fb warn">정보 내용을 먼저 써 주세요.</div>';return}
+  const cat=val('mcat');if(!cat){$('#mfb').innerHTML='<div class="fb warn">정보의 종류를 먼저 골라 주세요. 잘 모르겠으면 아래 ‘헷갈리기 쉬운 정보 비교’를 읽어 보세요.</div>';return}
+  S.cls.mine.unshift({text:t,cat,p:el.dataset.p,g:guessCat(t)});render()},
+ concept(){S.concept={c:val('cc'),n:val('cn'),done:true};render(true)},
+ case(el){saveCaseTxt();S.cases.cur=+el.dataset.i;render()},
+ casenext(){saveCaseTxt();S.cases.cur=(S.cases.cur+1)%D.order.length;render()},
+ thr(el){saveCaseTxt();const id=D.order[S.cases.cur];if(S.cases.done[id])return;S.cases.pick[id]=el.dataset.t;render(true)},
+ addft(){saveCaseTxt();S.cases.extra[D.order[S.cases.cur]]=true;render(true)},
+ casekey(){saveCaseTxt();S.cases.show[D.order[S.cases.cur]]=true;render(true)},
+ hint(){const cs=caseById(D.order[S.cases.cur]);const pick=S.cases.pick[cs.id];
+  $('#hint').innerHTML=`<div class="fb info">단서: 이 사례에서 눈여겨볼 점은 <b>${esc(D.threats[cs.threat].clue)}</b> 입니다.</div>`},
+ casechk(){saveCaseTxt();const id=D.order[S.cases.cur];const cs=caseById(id);const pick=S.cases.pick[id];
+  if(!pick){$('#hint').innerHTML='<div class="fb warn">먼저 위협 요소를 골라 주세요.</div>';return}
+  S.cases.done[id]=checkThreat(cs,pick,S.cases.txt[id]||[]);render(true)},
+ lab(el){S.tech.lab=el.dataset.k;render()},
+ pwq(el){S.tech.pwq[el.dataset.i]=+el.dataset.v;render(true)},
+ ac(el){const t=S.tech;const i=+el.dataset.i,j=+el.dataset.j;t.ac[i][j]=(t.ac[i][j]+1)%3;t.acfb=null;render(true)},
+ ackey(){S.tech.ackey=true;render(true)},
+ accheck(){S.tech.acfb=acCheck(S.tech.ac);render(true)},
+ acreset(){S.tech.ac=D.ac.files.map(()=>D.ac.roles.map(()=>0));S.tech.acfb=null;S.tech.ackey=false;render()},
+ avm(el){S.tech.avm[+el.dataset.i]=el.dataset.v;S.tech.avres=null;render(true)},
+ avrun(){const t=S.tech;t.rt=$('#rt').checked;t.up=$('#up').checked;t.avres=avRun(t.avm,t.rt,t.up);render(true)},
+ tcx(){const tn=S.tech.lab==='pw'?D.techs[0]:S.tech.lab==='ac'?D.techs[1]:D.techs[2];const t=val('tcx');S.tech.tc[tn]=t;const r=checkTechConcept(tn,t);const T=D.tech[tn];
+  $('#tcfb').innerHTML=`<ul class="chk">${r.hits.map((h,i)=>`<li class="${h?'y':'n'}">${esc(T.kwl[i])}</li>`).join('')}</ul><div class="fb ${r.ok?'good':'warn'}">${r.ok?'핵심이 잘 들어 있어요.':'위 항목 중 2가지 이상이 드러나게 써 보세요.'}</div><div class="fb info">${esc(T.hint)}</div>`},
+ ethtech(el){saveEth();S.eth.tech=+el.dataset.i;S.eth.fb=null;render()},
+ ethThr(el){saveEth();S.eth.thr=el.dataset.t;render()},
+ ethchk(){saveEth();S.eth.fb=checkPractices(D.techs[S.eth.tech],S.eth.items);render(true)},
+ mocknew(){S.mock=newMock();render()},
+ mockchk(){const m=S.mock;m.r=runMock();m.done=true;render(true)}
+};
+function saveEth(){S.eth.items=S.eth.items.map((_,i)=>({m:val('em'+i),r:val('er'+i)}))}
+document.addEventListener('click',e=>{const el=e.target.closest('[data-a]');if(el&&A[el.dataset.a])A[el.dataset.a](el)});
+document.addEventListener('input',e=>{if(e.target.id==='pw'||e.target.id==='per'){const t=S.tech;const pos=e.target.selectionStart;t.pw=val('pw');t.per=val('per');const id=e.target.id;render(true);const n=$('#'+id);if(n){n.focus();try{n.setSelectionRange(pos,pos)}catch(_){}}}});
+
+let keepScroll=false;
+function render(keep){const r=window.__route||(location.hash||'#home').slice(1);const route=V[r]?r:(r==='selftest'?'selftest':'home');nav(route);
+  const y=window.scrollY;$('#app').innerHTML=(V[route]||V.home)();if(keep)window.scrollTo(0,y);else window.scrollTo(0,0)}
+window.addEventListener('hashchange',()=>{if(location.hash==='#selftest')return selftest();if(location.hash==='#e2e')return e2e();if(location.hash==='#mobile')return mobileCheck();render()});
+
+/* ---------- 자체 점검 (#selftest) ---------- */
+function selftest(){const out=[];const T=(n,c)=>out.push([n,!!c]);
+ D.cases.forEach(c=>{const feats=c.feats.map(f=>f.t);const r=checkThreat(c,c.threat,feats);T(c.id+' 모범답 통과',r.ok&&r.feats.count===3);
+  THR.filter(t=>t!==c.threat).forEach(t=>T(c.id+' 오답('+t+') 불통과',!checkThreat(c,t,feats).ok));
+  T(c.id+' 빈 답 불통과',!checkThreat(c,c.threat,['','']).ok);T(c.id+' 같은 특징 2번은 불통과',!checkThreat(c,c.threat,[feats[0],feats[0]]).ok);
+  T(c.id+' 근거 표시',c.feats.every(f=>f.ev.every(e=>passage(c,true).includes('<mark'))))});
+ T('개념 예시 통과',checkConcept(D.q2ex.concept).ok);T('필요성 예시 통과',checkNeed(D.q2ex.need).ok);T('개념 빈 답 불통과',!checkConcept('').ok&&!checkNeed('').ok);
+ D.techs.forEach(t=>{const T0=D.tech[t];T('기술 예시 '+t,D.tech[t].ex.length===2&&checkPractices(t,[{m:T0.ex[0].split('→')[0],r:T0.ex[0].split('→')[1]},{m:T0.ex[1].split('→')[0],r:T0.ex[1].split('→')[1]},{m:'다른 방법으로 기기에 잠금을 설정한다',r:'다른 사람의 정보를 보호하기 위해서이다'}]).ok);
+  T('기술 개념 힌트 통과 '+t,checkTechConcept(t,T0.hint).ok);T('기술 개념 빈 답 불통과 '+t,!checkTechConcept(t,'').ok)});
+ T('PW 1234 약함',pwCheck('1234','').score<=2&&pwCheck('1234','').t.includes('바로'));
+ T('PW 생일 포함 감지',!pwCheck('gildong0412!','홍길동 gildong 0412').items[4].y);
+ T('PW 강함',pwCheck('Gk7#mWq2!xP9','').score===5);
+ T('AC 모범 통과',acCheck(D.ac.mn).ok);T('AC 초기값 불통과',!acCheck(D.ac.files.map(()=>D.ac.roles.map(()=>0))).ok);
+ const allscan=D.av.map(()=>'scan'),allopen=D.av.map(()=>'open');
+ T('AV 검사+업데이트: 악성 모두 차단',avRun(allscan,false,true).every((r,i)=>D.av[i].bad?r.kind==='good':true));
+ T('AV 검사만(업데이트 X): 변종 놓침',avRun(allscan,false,false).some((r,i)=>D.av[i].variant&&r.kind==='bad'));
+ T('AV 바로 열기: 감염',avRun(allopen,false,false).some((r,i)=>D.av[i].bad&&r.kind==='bad'));
+ T('AV 실시간+업데이트: 열어도 차단',avRun(allopen,true,true).every((r,i)=>!D.av[i].bad||r.kind==='good'));
+ const G=guessCat;T('추천: 독감 예방법→건강 상식',G('독감 바이러스 예방 방법').cat==='건강 상식');T('추천: 독감 바이러스 정보→건강 상식',G('독감 바이러스 정보').cat==='건강 상식');T('추천: 내 독감 진단 기록→의료 정보',G('내 독감 진단 기록').cat==='의료 정보');T('추천: 환율→경제 정보',G('이번 주 환율 변동').cat==='경제 정보');T('추천: 내 체크카드 번호→금융 정보',G('내 체크카드 번호').cat==='금융 정보');T('추천: 버스 시간표→교통 정보',G('학교 앞 버스 시간표').cat==='교통 정보');T('추천: 내 실시간 위치→위치 정보',G('내가 있는 실시간 위치').cat==='위치 정보');T('추천: 알바 공고→구인 정보',G('편의점 알바 모집 공고').cat==='구인 정보');T('추천: 내 이력서→인적 정보',G('내 이력서').cat==='인적 정보');T('추천: 컴퓨터 바이러스→공유',G('새 컴퓨터 바이러스 대처법').cat==='컴퓨터 바이러스 정보');
+ D.cats.forEach(c=>c.ex.forEach(x=>{const g=G(x);if(g)T('예시 일관성: '+x,g.cat===c.n)}));
+ T('분류 16종 5보호',D.cats.filter(c=>c.t==='P').length===5&&D.cats.length===16);
+ S.mock=newMock();T('모의 문제 위협 서로 다름',caseById(S.mock.a).threat!==caseById(S.mock.b).threat&&S.mock.cats.length===8);S.mock=null;
+ const bad=out.filter(x=>!x[1]);document.title=bad.length?'SELFTEST FAIL '+bad.length:'SELFTEST PASS '+out.length;
+ $('#app').innerHTML=`<div class="card"><h2>${document.title}</h2><ul class="chk">${out.map(x=>`<li class="${x[1]?'y':'n'}">${esc(x[0])}</li>`).join('')}</ul></div>`}
+
+/* ---------- 화면 흐름 자체 점검 (#e2e) ---------- */
+function e2e(){const out=[];const T=(n,c)=>out.push([n,!!c]);const go=r=>{window.__route=r;render()};
+ const setv=(id,v)=>{const e=$('#'+id);if(!e)throw new Error('no #'+id);e.value=v};
+ const click=(a,attrs)=>{A[a]({dataset:attrs||{}})};
+ try{
+ go('home');T('홈 렌더',$('#app').textContent.includes('연습'));
+ go('cls');D.cats.forEach((c,i)=>click('cls',{i:String(i),p:c.t}));render(true);
+ T('분류 16/16 정답',$('#app').textContent.includes('맞힌 개수 16 / 16'));
+ S.cls.ans={};D.cats.forEach((c,i)=>click('cls',{i:String(i),p:c.t==='P'?'S':'P'}));T('분류 오답 시 안내',$('#app').textContent.includes('다시 생각해 봐요'));
+ go('cls');setv('mtext','독감 바이러스 정보');setv('mcat','의료 정보');click('mine',{p:'S'});
+ T('내 카드: 독감→건강 상식 안내',$('#app').textContent.includes('건강 상식')&&$('#app').textContent.includes('내용을 다시 살펴봐요'));
+ go('cls');setv('mtext','');click('mine',{p:'S'});T('내 카드: 빈 입력 안내',$('#app').textContent.includes('정보 내용을 먼저'));
+ setv('mtext','우리 동네 도서관 행사');setv('mcat','');click('mine',{p:'S'});T('내 카드: 종류 미선택 안내',$('#app').textContent.includes('종류를 먼저'));
+ go('concept');setv('cc',D.q2ex.concept);setv('cn',D.q2ex.need);click('concept');T('개념 예시 점검 통과 문구',$('#app').textContent.includes('핵심이 들어 있어요')&&$('#app').textContent.includes('필요성이 1가지 이상'));
+ go('concept');S.concept={};go('concept');setv('cc','몰라요');setv('cn','');click('concept');T('개념 부족 안내',$('#app').textContent.includes('드러나게 써 보세요'));
+ D.order.forEach((id,i)=>{S.cases.cur=i;go('cases');const c=caseById(id);click('thr',{t:c.threat});setv('ft0',c.feats[0].t);setv('ft1',c.feats[1].t);click('casechk');
+  T('사례 '+id+' 화면 점검 통과',!!S.cases.done[id]&&S.cases.done[id].ok&&$('#app').textContent.includes('맞았어요')&&$('#app').querySelectorAll('mark').length>=3)});
+ S.cases.cur=3;S.cases.done={};S.cases.pick={};go('cases');click('thr',{t:'파밍'});click('casechk');T('사례 오답 위협 안내',$('#app').textContent.includes('정답은'));
+ go('cases');click('casekey');T('모범 답안 보기 버튼',$('#app').textContent.includes('모범 답안')&&$('#app').querySelectorAll('mark').length>=3);
+ go('tech');S.tech.lab='pw';go('tech');setv('pw','1234');document.dispatchEvent(new Event('input'));
+ S.tech.pw='Gk7#mWq2!xP9';go('tech');T('암호 강함 표시',$('#app').textContent.includes('5')||$('#app').querySelectorAll('.chk .y').length>=5);
+ S.tech.lab='ac';go('tech');D.ac.mn.forEach((row,i)=>row.forEach((v,j)=>{S.tech.ac[i][j]=v}));click('accheck');T('접근 제어 정답 통과 문구',$('#app').textContent.includes('모두 알맞아요'));
+ click('ackey');T('접근 제어 모범 답안 표시',$('#app').textContent.includes('모범 답안'));
+ S.tech.lab='av';go('tech');$('#rt').checked=true;$('#up').checked=true;S.tech.avm=D.av.map(()=>'scan');click('avrun');T('백신: 모두 차단',D.av.every((f,i)=>!f.bad||S.tech.avres[i].kind==='good'));
+ S.tech.lab='pw';go('tech');setv('tcx',D.tech[D.techs[0]].hint);click('tcx');T('기술 개념 점검',$('#tcfb').textContent.includes('잘 들어 있어요'));
+ go('eth');S.eth.tech=1;go('eth');const ex=D.tech[D.techs[1]].ex;[0,1].forEach(i=>{setv('em'+i,ex[i].split('→')[0]);setv('er'+i,ex[i].split('→')[1])});setv('em2','자료를 올리기 전에 공유 범위를 다시 확인한다');setv('er2','다른 사람의 정보를 보호하기 위해서이다');click('ethchk');T('윤리 3가지 통과',$('#app').textContent.includes('잘 썼어요'));
+ S.mock=null;go('mock');const m=S.mock;const ca=caseById(m.a),cb=caseById(m.b);
+ m.cats.forEach((c,i)=>{const e=document.querySelector(`input[name="q1_${i}"][value="${c.t}"]`);e.checked=true});
+ setv('m2c',D.q2ex.concept);setv('m2n',D.q2ex.need);
+ document.querySelector(`input[name="tha"][value="${ca.threat}"]`).checked=true;document.querySelector(`input[name="thb"][value="${cb.threat}"]`).checked=true;
+ setv('fa0',ca.feats[0].t);setv('fa1',ca.feats[1].t);setv('fb0',cb.feats[0].t);setv('fb1',cb.feats[1].t);
+ const tn=D.techs[0];setv('m5c',D.tech[tn].hint);const ex0=D.tech[tn].ex;setv('m5m0',ex0[0].split('→')[0]);setv('m5r0',ex0[0].split('→')[1]);setv('m5m1',ex0[1].split('→')[0]);setv('m5r1',ex0[1].split('→')[1]);setv('m5m2','암호를 주기적으로 바꾸고 다른 곳과 겹치지 않게 한다');setv('m5r2','한 곳이 유출되어도 다른 계정의 피해를 막기 위해서이다');
+ click('mockchk');T('모의 평가 모범 답안 전체 도달',S.mock.r.e1===6&&S.mock.r.e2===4&&$('#app').textContent.includes('충분히 도달')&&$('#app').textContent.includes('1번 정답'));
+ S.mock=null;go('mock');click('mockchk');T('모의 평가 빈 답: 더 연습',S.mock.r.e1<=1&&$('#app').textContent.includes('더 연습해요'));
+ go('key');T('모범 답안 화면: 사례 14개·mark',$('#app').querySelectorAll('details').length>=8&&$('#app').querySelectorAll('mark').length>=40);
+ }catch(e){T('예외 없음: '+e.message,false)}
+ window.__route=null;
+ const bad=out.filter(x=>!x[1]);document.title=bad.length?'E2E FAIL '+bad.length:'E2E PASS '+out.length;
+ $('#app').innerHTML=`<div class="card"><h2>${document.title}</h2><ul class="chk">${out.map(x=>`<li class="${x[1]?'y':'n'}">${esc(x[0])}</li>`).join('')}</ul></div>`}
+function mobileCheck(){const out=[];ROUTES.forEach(([r])=>{window.__route=r;if(r==='mock'){S.mock=null}render();const wr=document.querySelector('.wrap');wr.style.maxWidth='390px';wr.style.width='390px';const w=wr.clientWidth;out.push([r+' 폭 390px에서 가로 넘침 없음 (scrollWidth '+wr.scrollWidth+' ≤ '+w+')',wr.scrollWidth<=w+1])});document.querySelector('.wrap').style.width='';document.querySelector('.wrap').style.maxWidth='';
+ window.__route=null;const bad=out.filter(x=>!x[1]);document.title=bad.length?'MOBILE FAIL '+bad.length:'MOBILE PASS '+out.length;$('#app').innerHTML=out.map(x=>`<p class="${x[1]?'y':'n'}">${esc(x[0])}</p>`).join('')}
+window.addEventListener('error',e=>{const d=document.createElement('pre');d.id='err';d.textContent='ERR '+e.message;document.body.appendChild(d)});
+if(location.hash==='#selftest')selftest();else if(location.hash==='#e2e')e2e();else if(location.hash==='#mobile')mobileCheck();else render();
+</script>
+</body>
+</html>
