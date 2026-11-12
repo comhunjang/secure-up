@@ -142,6 +142,10 @@ V.home=()=>`<div class="card"><h2>차근차근, 직접 해 보며 익혀요</h2>
 <a href="#eth"><b>⑤ 디지털 윤리 실천</b><br><span class="note">선택한 기술과 연결해 실천 방법을 3가지 써 봐요.</span></a>
 <a href="#mock"><b>모의 수행평가</b><br><span class="note">1~5번을 한 번에 풀고 점검해 봐요.</span></a></div>`;
 
+function otherRow(m){const g=m.g;const gc=g&&D.cats.find(x=>x.n===g.cat);
+  return `<div class="cat"><div><b>${esc(m.text)}</b><div class="note small">내가 쓴 종류: 기타 — ${esc(m.other)} · 내 판단: ${m.p==='P'?'보호':'공유'}</div></div><div><span class="tag ${m.p}">${m.p==='P'?'보호':'공유'}로 판단</span></div>
+  <div class="fb info" style="flex-basis:100%"><b>교과서 분류표에 없는 종류예요.</b> 스스로 점검해 보세요.<ul class="small" style="margin:4px 0 0">${D.rule3.map(x=>`<li>${x}</li>`).join('')}</ul>${m.p==='P'?'특정한 사람을 알아볼 수 있거나 공개되면 피해가 생긴다면 <b>보호</b>가 알맞아요.':'널리 알려서 모두에게 도움이 된다면 <b>공유</b>가 알맞아요.'} 판단 이유를 친구와 비교해 보세요.</div>
+  ${gc?`<div class="fb info" style="flex-basis:100%">내용으로 보면 <b>${esc(g.cat)}</b>(<span class="tag ${gc.t}">${gc.t==='P'?'보호':'공유'}</span>)에 가까울 수도 있어요. 목록의 종류로 다시 확인해 보세요.</div>`:''}</div>`}
 function guessNote(m){const g=m.g;if(!g||g.cat===m.cat)return '';const gc=D.cats.find(x=>x.n===g.cat);if(!gc)return '';const p=D.pairs[g.pair];
   return `<div class="fb info" style="flex-basis:100%"><b>내용을 다시 살펴봐요.</b> ‘${esc(m.text)}’은(는) <b>${esc(g.cat)}</b>(<span class="tag ${gc.t}">${gc.t==='P'?'보호':'공유'}</span>)에 더 가까울 수 있어요. 고른 종류(${esc(m.cat)})로 판단하면 결과가 달라져요.${p?` ${esc(p.q)}`:''} 내용이 <b>나에 대한 정보인지, 모두에게 해당하는 일반 정보인지</b>를 먼저 가려 보세요.</div>`}
 function pairsCard(){return `<div class="card"><h2>헷갈리기 쉬운 정보 비교</h2><p class="note">같은 주제라도 <b>나(특정한 사람)에 대한 정보</b>인지 <b>모두에게 해당하는 일반 정보</b>인지에 따라 보호와 공유가 달라져요. 먼저 이렇게 물어보세요.</p><ul class="small">${D.rule3.map(x=>`<li>${x}</li>`).join('')}</ul>
@@ -150,12 +154,12 @@ V.cls=()=>{const st=S.cls;const done=Object.keys(st.ans).length;const right=Obje
  const rows=st.order.map(i=>{const c=D.cats[i],a=st.ans[i];const ex=c.ex[i%2];
   let fb='';if(a){const ok=clsAnswer(c,a);fb=`<div class="fb ${ok?'good':'bad'}" style="flex-basis:100%">${ok?'맞았어요. ':'다시 생각해 봐요. '}<b>${esc(c.n)}</b>은(는) <span class="tag ${c.t}">${c.t==='P'?'보호':'공유'}</span> 정보예요. ${esc(c.why)}</div>`}
   return `<div class="cat"><div><b>${esc(c.n)}</b><div class="note small">예: ${esc(ex)}</div></div><div class="row"><button data-a="cls" data-i="${i}" data-p="P" class="${a==='P'?(clsAnswer(c,'P')?'ok':'no'):''}">보호</button><button data-a="cls" data-i="${i}" data-p="S" class="${a==='S'?(clsAnswer(c,'S')?'ok':'no'):''}">공유</button></div>${fb}</div>`}).join('');
- const mine=st.mine.map(m=>{const c=D.cats.find(x=>x.n===m.cat);return `<div class="cat"><div><b>${esc(m.text)}</b><div class="note small">내가 고른 종류: ${esc(m.cat)} · 내 판단: ${m.p==='P'?'보호':'공유'}</div></div><div>${c.t===m.p?`<span class="tag ${c.t}">일치 ✔ ${c.t==='P'?'보호':'공유'}</span>`:`<span class="tag ${c.t}">교과서는 ${c.t==='P'?'보호':'공유'}</span>`}</div><div class="fb ${c.t===m.p?'good':'bad'}" style="flex-basis:100%">${esc(c.why)}</div>${guessNote(m)}</div>`}).join('');
+ const mine=st.mine.map(m=>{if(m.cat==='기타')return otherRow(m);const c=D.cats.find(x=>x.n===m.cat);return `<div class="cat"><div><b>${esc(m.text)}</b><div class="note small">내가 고른 종류: ${esc(m.cat)} · 내 판단: ${m.p==='P'?'보호':'공유'}</div></div><div>${c.t===m.p?`<span class="tag ${c.t}">일치 ✔ ${c.t==='P'?'보호':'공유'}</span>`:`<span class="tag ${c.t}">교과서는 ${c.t==='P'?'보호':'공유'}</span>`}</div><div class="fb ${c.t===m.p?'good':'bad'}" style="flex-basis:100%">${esc(c.why)}</div>${guessNote(m)}</div>`}).join('');
  return `<div class="card"><h2>① 보호해야 할 정보 vs 공유해야 할 정보</h2><p class="note">정보의 종류마다 보호할지 공유할지 골라 보세요. 맞는지 바로 알려 줘요. (개인정보와 저작권이 있는 저작물은 보호, 공공의 이익이 되는 정보는 공유예요.)</p>
  <div class="row"><b>맞힌 개수 ${right} / ${done} (전체 ${D.cats.length})</b><button data-a="clsreset">다시 섞기</button></div>${rows}</div>
  <div class="card"><h2>내 정보 카드 만들기</h2><p class="note">연습지처럼 정보 내용을 직접 써 보고, 어떤 종류이며 보호인지 공유인지 점검해요. 친구들과 서로 비교해 보세요.</p>
  <label for="mtext">정보 내용 (예: 우리 동네 버스 시간표)</label><input type="text" id="mtext" placeholder="정보 내용을 써 보세요" maxlength="60">
- <div class="grid2"><div><label for="mcat">정보의 종류</label><select id="mcat"><option value="">— 종류를 골라 주세요 —</option>${D.cats.map(c=>`<option>${esc(c.n)}</option>`).join('')}</select></div>
+ <div class="grid2"><div><label for="mcat">정보의 종류</label><select id="mcat"><option value="">— 종류를 골라 주세요 —</option>${D.cats.map(c=>`<option>${esc(c.n)}</option>`).join('')}<option value="기타">기타 (목록에 없음, 직접 입력)</option></select><div id="mothrow" style="display:none"><label for="moth">종류 직접 입력</label><input type="text" id="moth" maxlength="20" placeholder="예: 학교 행사 정보"></div></div>
  <div><label>내 판단</label><div class="row"><button data-a="mine" data-p="P">보호</button><button data-a="mine" data-p="S">공유</button></div></div></div>
  <div id="mfb"></div>${mine}</div>${pairsCard()}`};
 
@@ -280,7 +284,8 @@ const A={
  clsreset(){S.cls={order:shuffle(D.cats.map((_,i)=>i)),ans:{},mine:S.cls.mine};render()},
  mine(el){const t=val('mtext').trim();if(!t){$('#mfb').innerHTML='<div class="fb warn">정보 내용을 먼저 써 주세요.</div>';return}
   const cat=val('mcat');if(!cat){$('#mfb').innerHTML='<div class="fb warn">정보의 종류를 먼저 골라 주세요. 잘 모르겠으면 아래 ‘헷갈리기 쉬운 정보 비교’를 읽어 보세요.</div>';return}
-  S.cls.mine.unshift({text:t,cat,p:el.dataset.p,g:guessCat(t)});render()},
+  let other='';if(cat==='기타'){other=val('moth').trim();if(!other){$('#mfb').innerHTML='<div class="fb warn">‘기타’를 골랐어요. 정보의 종류를 직접 입력해 주세요.</div>';return}}
+  S.cls.mine.unshift({text:t,cat,other,p:el.dataset.p,g:guessCat(t+' '+other)});render()},
  concept(){S.concept={c:val('cc'),n:val('cn'),done:true};render(true)},
  case(el){saveCaseTxt();S.cases.cur=+el.dataset.i;render()},
  casenext(){saveCaseTxt();S.cases.cur=(S.cases.cur+1)%D.order.length;render()},
@@ -310,6 +315,7 @@ const A={
 };
 function saveEth(){S.eth.items=S.eth.items.map((_,i)=>({m:val('em'+i),r:val('er'+i)}))}
 document.addEventListener('click',e=>{const el=e.target.closest('[data-a]');if(el&&A[el.dataset.a])A[el.dataset.a](el)});
+document.addEventListener('change',e=>{if(e.target.id==='mcat'){const r=$('#mothrow');if(r)r.style.display=e.target.value==='기타'?'block':'none'}});
 document.addEventListener('input',e=>{if(e.target.id==='pw'||e.target.id==='per'){const t=S.tech;const pos=e.target.selectionStart;t.pw=val('pw');t.per=val('per');const id=e.target.id;render(true);const n=$('#'+id);if(n){n.focus();try{n.setSelectionRange(pos,pos)}catch(_){}}}});
 
 let keepScroll=false;
@@ -353,6 +359,9 @@ function e2e(){const out=[];const T=(n,c)=>out.push([n,!!c]);const go=r=>{window
  S.cls.ans={};D.cats.forEach((c,i)=>click('cls',{i:String(i),p:c.t==='P'?'S':'P'}));T('분류 오답 시 안내',$('#app').textContent.includes('다시 생각해 봐요'));
  go('cls');setv('mtext','독감 바이러스 정보');setv('mcat','의료 정보');click('mine',{p:'S'});
  T('내 카드: 독감→건강 상식 안내',$('#app').textContent.includes('건강 상식')&&$('#app').textContent.includes('내용을 다시 살펴봐요'));
+ go('cls');setv('mtext','학교 동아리 행사 사진');setv('mcat','기타');click('mine',{p:'S'});T('기타: 종류 미입력 안내',$('#app').textContent.includes('직접 입력해 주세요'));
+ setv('moth','학교 행사 정보');click('mine',{p:'S'});T('기타: 직접 입력 카드 표시',$('#app').textContent.includes('기타 — 학교 행사 정보')&&$('#app').textContent.includes('교과서 분류표에 없는'));
+ go('cls');setv('mcat','기타');$('#mcat').dispatchEvent(new Event('change',{bubbles:true}));T('기타 선택 시 직접 입력칸 표시',$('#mothrow').style.display==='block');setv('mcat','의료 정보');$('#mcat').dispatchEvent(new Event('change',{bubbles:true}));T('다른 종류 선택 시 입력칸 숨김',$('#mothrow').style.display==='none');
  go('cls');setv('mtext','');click('mine',{p:'S'});T('내 카드: 빈 입력 안내',$('#app').textContent.includes('정보 내용을 먼저'));
  setv('mtext','우리 동네 도서관 행사');setv('mcat','');click('mine',{p:'S'});T('내 카드: 종류 미선택 안내',$('#app').textContent.includes('종류를 먼저'));
  go('concept');setv('cc',D.q2ex.concept);setv('cn',D.q2ex.need);click('concept');T('개념 예시 점검 통과 문구',$('#app').textContent.includes('핵심이 들어 있어요')&&$('#app').textContent.includes('필요성이 1가지 이상'));
